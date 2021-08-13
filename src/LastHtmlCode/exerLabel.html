@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html> 
+<head>
+<title>운동 정의 페이지 (라벨)</title>
+<script>
+    function makeButton(){
+        var exerName = document.getElementById("운동명").value; //운동명 버튼 만들기
+        var weight = document.getElementById("무게").value;
+        var count = document.getElementById("횟수").value;
+        var sets = document.getElementById("세트").value;
+        var attr = {exerName, weight, count, sets};
+        var obj = document.getElementById("r"); //ol에 버튼 붙이기
+        var newol =document.createElement("input");  //그 버튼은 newol이애 
+        newol.setAttribute("type", "button");
+        newol.setAttribute("value", exerName);
+        newol.setAttribute("id", exerName); //그 버튼의 id를 운동명으로 주기
+        newol.innerHTML = exerName; //html에 운동명으로 만든 버튼 붙이기
+        newol.setAttribute("formsction", "labelChan.html");
+        newol.setAttribute("onclick", "document.location.href= 'labelChan.html'");
+        
+        //일단 버튼을 만들건데 위에 했던것 처럼
+       //그니까 버튼 이름은 id=운동명으로 하고 속성으로? 배열로 무게 횟수 셋트 데이터를 가지고 있는거지 
+       //근데 버튼이 생성 될떄 마다 자동으로 갖고 있고 
+       // 그 가진 데이터를 뽑아서 수정할때도 쓰는거야 어때 죽이지 이제 해봐
+       //일단 그 버튼을 운동명이름을 가진 버튼으로 만들기는 성공했어 이제 그 버튼에 배열을 달면되나?
+        obj.appendChild(newol);
+        console.log(attr);
+    }
+
+  /* 라디오박스 체크 됐는지 확인, 체크 됐다면 값을 꼭 써야함   
+  var chk_radio = document.getElementsByName('라디오');
+		var sel_type = null;
+		for(var i=0;i<chk_radio.length;i++){
+			if(chk_radio[i].checked == true){ 
+				sel_type = chk_radio[i].value;
+			}
+		}
+
+		if(sel_type == null){
+                alert("서비스유형을 선택하세요."); 
+			return false;
+		}
+*/
+</script>
+</head>
+
+<body>
+<h3>운동정의</h3>
+<hr>
+<form action="labelChan.html" id="frm" method="POST"> <!--아니 디자인은 어쩔꺼여--> 
+<div>운동명: <br><input type="text" name="name" id="운동명" value="">
+    <input type="radio" name="라디오"/>
+</div>
+<div>무게: <br><input type="text" name="name" id="무게" value="">
+    <input type="radio" name="라디오" value="무게"/>
+</div>
+<div>횟수: <br><input type="text" name="name" id="횟수" value="">
+    <input type="radio" name="라디오" value="횟수"/>
+</div>
+<div>세트: <br><input type="text" name="name" id="세트" value="">
+    <input type="radio" name="라디오" value="세트"/>
+</div>    
+<div><input type="button" onclick="makeButton()" id="formMBtn" value="확인"></div><!--선택박스 (라디오바스?)설정하기-->
+</form>
+
+    <ol type="A" style="background-color: rgb(173, 191, 202)" id="r">
+ <!--그래 여기에다가 버튼을 만들긴 했는데 클릭하면 수정하기, 삭제 버튼 나와야함--> 
+
+    </ol>
+
+</body>
+</html>
