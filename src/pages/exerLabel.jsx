@@ -1,5 +1,7 @@
+//서해수 운동라벨
 import React from 'react';
 //import Header from '../components/Header';
+import Header from '../Layouts/Header';
 import { DataGrid } from '@material-ui/data-grid';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -75,6 +77,7 @@ export default function FormPropsTextFields() {
   const classes = useStyles();
 
   return (
+    
     <form className={classes.root} noValidate autoComplete="off">
       <div>
         <TextField required id="standard-required" label="운동명" defaultValue="운동명을 입력하세요" />

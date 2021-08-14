@@ -1,8 +1,9 @@
 import React from 'react';
-//import Header from '../components/Header';
-
+import Header from '../Layouts/Header';
+import exerLabel from "../pages/exerLabel";
 function MainPage() {
-  return <div className='main'>메인 페이지</div>;
+  return <div className='main'><Header/>
+  <exerLabel/></div>;
 }
 
 export default MainPage;

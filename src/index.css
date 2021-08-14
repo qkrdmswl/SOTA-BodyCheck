@@ -30,3 +30,27 @@ ul{
   margin: 30px, 0;
   text-align: center;
 }
+/*user*/
+.horizontal {
+  width: 100%;
+  text-align: center;
+  border-bottom: 1px solid #aaa;
+  line-height: 0.1em;
+  margin: 10px 0 20px;
+}
+
+.horizontal span {
+  background: #fff;
+  padding: 0 10px;
+}
+
+/* src/page/main.css */
+.search_user_info_div { 
+  margin-top: 20px; 
+  display: grid;
+  grid-template-columns: 50% 50%;
+  border-top: solid 1px #ababab;
+}
+.search_user_info_div div { text-align: center; margin-top: 10px;}
+.search_user_info_div div b { cursor: pointer; margin-top: -5px; font-size: 14px; } 
+/*user end*/
