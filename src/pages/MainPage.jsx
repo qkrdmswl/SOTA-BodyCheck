@@ -1,9 +1,13 @@
 import React from 'react';
 import Header from '../Layouts/Header';
-import exerLabel from "../pages/exerLabel";
+import ExerLabel from "../pages/exerLabel";
+import Calender from "../pages/calender";
 function MainPage() {
-  return <div className='main'><Header/>
-  <exerLabel/></div>;
+  return <div className='main'>
+    <Header/>
+  <ExerLabel />
+  <Calender />
+  </div>;
 }
 
 export default MainPage;

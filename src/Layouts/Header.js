@@ -53,7 +53,7 @@ const Header = () => {
           </Container>
         </Navbar>
         <Link to='/main/exerLabel'>운동정의</Link>
-        
+        <Link to ='/main/calender'>캘린더</Link>
       </header>
     </>
   );
