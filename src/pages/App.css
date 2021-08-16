@@ -1,0 +1,62 @@
+* {
+  padding: 0px;
+  margin: 0px;
+  box-sizing: border-box;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 12px;
+  padding-left: 12px;
+  background-color: white;
+}
+
+.title {
+  font-size: 25px;
+  margin-left: 350px;
+  color: #6e9fed;
+  border: 0;
+  outline: 0;
+  background-color: white;
+}
+.title:focus {
+  border: 0;
+  outline: 0;
+}
+
+.title:hover {
+  color: #3c70c4;
+}
+
+section {
+  margin: 17px;
+}
+
+.left {
+  float: left;
+  margin-left: 200px;
+  margin-top: 30px;
+}
+
+.right {
+  float: right;
+  margin-right: 200px;
+  margin-top: 30px;
+}
+
+.diet-table {
+  width: 550px;
+}
+
+.exercise-table {
+  width: 700px;
+  height: 250px;
+  background-color: #c8c8c8;
+  margin-bottom: 50px;
+}
+
+.media {
+  font-weight: bold;
+  font-size: 24px;
+}
