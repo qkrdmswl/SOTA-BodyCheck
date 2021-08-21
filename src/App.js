@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 //exer
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { StateMachineProvider, createStore } from "little-state-machine";
 import MainPage from './pages/MainPage';
 //import exerLabel from './pages/exerLabel';
 import InputSample from './pages/exerLabel';
@@ -19,21 +20,23 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 //import MyApp from "./contents/calendar";
 //import Preview from "./contents/preview";
 import Calender from "./pages/calender";
+import exerLabelPage from "./pages/exerLabelPage";
+import Step1 from "./pages/exerLabel";
 
 function App() {
   return (
     <>
+       <StateMachineProvider>
       <Router>
         <Route path='/main' component={Header} />
         <Switch>
           <Route path='/main/exerLabel' component={InputSample} />
           <Route path='/' component={MainPage} />
-          <Route path='/main/calender' component={Calender} />
-         
-          <Route render={() => <div className='error'>링크똑디 안쓰나</div>} />
-          
+          <Route path='/main/calender' component={Calender} />        
+          <Route render={() => <div className='error'>링크똑디 안쓰나</div>} />         
         </Switch>
       </Router>
+      </StateMachineProvider>
     </>
   );
 }
