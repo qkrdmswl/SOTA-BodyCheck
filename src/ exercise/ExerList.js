@@ -91,6 +91,7 @@ class Exer extends Component {
                   onChange={this.handleChange}
               />
               <div id="exerList" style={{"margin":"10px"}}>{mapToComponents(this.state.exerData)}</div>
+             <button id ="create">create </button>
               <ExerDetails
                   isSelected={this.state.selectedKey != -1}
                   exer={this.state.exerData[this.state.selectedKey]}

@@ -113,6 +113,7 @@ class ExerDetails extends Component {
                     </button>
                     <button onClick={this.props.onRemove} style={{"border-radius":"5px", "margin-left":"5px", "background-color":"rgb(255,051,000)", "color":"white"}}>
                         Remove</button> 
+                        <butotn style={{ "backgroundColor":"gray", "margin-left":"100px" ,"border-radius":"5px"}}>  X  </butotn>
                 </p>
 
             </div>
