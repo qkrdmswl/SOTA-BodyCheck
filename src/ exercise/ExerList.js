@@ -10,7 +10,7 @@ class Exer extends Component {
           selectedKey: -1,
           keyword: '',
           exerData: [{
-              name: '무거운거들기',
+              name: '예시',
               weight: '42',
               count:'3',
               sets:'3'
@@ -80,9 +80,10 @@ class Exer extends Component {
               />);
           })
       }
+      
       return (
           <div id="전체">
-              <h1>운동List</h1>
+               {/*운동List*/}
               <input id="검색input"
                   name="keyword"
                   placeholder="Search"
