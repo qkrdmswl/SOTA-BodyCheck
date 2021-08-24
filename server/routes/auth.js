@@ -1,10 +1,10 @@
 const express = require('express');
 const axios = require('axios');
-const API_URL = require('../config/const');
+const {API_URL} = require('../config/const');
 const { isLoggedIn, getValidationError, getNoSuchResource, getSuccess, getFailure } = require('./middlewares');
 
 const router = express.Router();
-
+axios.defaults.headers.origin = 'http://localhost:5001';
 router.post('/join', async (req, res, next) => {
     const { email, password } = req.body;
     try {
@@ -18,6 +18,16 @@ router.post('/join', async (req, res, next) => {
             password: hash,
         });
         return res.status(201).json(getSuccess(exUser));
+    } catch (error) {
+        console.error(error);
+        return next(error);
+    }
+});
+
+router.get('/test', isLoggedIn, async (req, res, next) => {
+    try {
+        const {token, id} = req.user;
+        return res.status(201).json({token, id});
     } catch (error) {
         console.error(error);
         return next(error);
@@ -42,12 +52,21 @@ router.post('/login',
         try {
 
             const { email, password } = req.body;
-
-            const tokenResult = await axios.post(`${API_URL}/login`, {email, password});
-            req.session.jwt = tokenResult.data.token;
-
-            console.log(req.session.jwt);
-            return res.status(200).json(req.session.jwt);
+            const tokenResult = await axios.post(`${API_URL}/auth/login`, {email, password});
+            const token = tokenResult.data.data;
+            const userResult = await axios({
+                method: 'GET',
+                url: `${API_URL}/auth/me`,
+                headers: {'bodycheck-access-token': token},
+            });
+            const user = userResult.data.data;
+            res.cookie('bodycheck', {token, id:user.id}, {
+                httpOnly: true,
+                sameSite: true,
+                signed: true,
+                secure: false
+            });
+            return res.status(200).json(token);
         } catch (error) {
             console.error(error);
             return next(error);

@@ -1,4 +1,6 @@
 const jwt = require('jsonwebtoken');
+const axios = require('axios');
+const {API_URL} = require('../config/const');
 
 let middlewares = {};
 
@@ -44,20 +46,13 @@ middlewares.updateForEach = async (record, fields) => {
 
 // middlewares
 middlewares.isLoggedIn = (req, res, next) => {
-  const token = req.headers['bodycheck-access-token'];
+  const {token, id} = req.signedCookies.bodycheck;
   if (!token) {
     return res.status(401).json(middlewares.getFailure('token is required'));
   }
   else {
-    jwt.verify(token, process.env.JWT_SECRET, (error, decoded) => {
-      if (error) {
-        return res.status(401).json(middlewares.getFailure('token is expired'));
-      }
-      else {
-        req.decoded = decoded;
-        next();
-      }
-    })
+    req.user = {token, id};
+    next();
   }
 };
 
