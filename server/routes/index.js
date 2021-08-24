@@ -1,9 +1,25 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const { User, Domain } = require('../models');
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+const router = express.Router();
+
+router.get('/', async (req, res, next) => {
+  try {
+    const user = await User.findOne({
+      where: { id: req.user && req.user.id || null },
+      include: { model: Domain },
+    });
+    res.render('login', {
+      user,
+      domains: user && user.Domains,
+    });
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
 });
+
+
+
 
 module.exports = router;

@@ -1,11 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 import { Modal, Button, Form, Container } from "react-bootstrap";
 import { GoogleLogin } from "react-google-login";
 import HorizontalLine from "../components/HorizonLine";
+import FindId from "./FindId";
+import FindPw from "./FindPw";
 
 const SignInModal = ({ show, onHide }) => {
+  const [findIdModalOn, setFindIdModalOn] = useState(false);
+  const [findPwModalOn, setFindPwModalOn] = useState(false);
+
   return (
-    <Modal
+    <>
+     <FindId
+        show={findIdModalOn}
+        onHide={() => setFindIdModalOn(false)}
+      />
+
+     <FindPw
+        show={findPwModalOn}
+        onHide={() => setFindPwModalOn(false)}
+      />
+      
+      <Modal
       show={show}
       onHide={onHide}
       size="lg"
@@ -41,8 +57,8 @@ const SignInModal = ({ show, onHide }) => {
             </Button> */}
 
            <div className='search_user_info_div'>
-           <div> <b style={{ 'marginLeft' : '15px' }}> 아이디 찾기 </b> </div>
-           <div> <b> 비밀번호 찾기 </b> </div>
+           <div onClick={() => setFindIdModalOn(true)}> <b style={{ 'marginLeft' : '15px' }}> 아이디 찾기 </b> </div>
+           <div onClick={() => setFindPwModalOn(true)}> <b> 비밀번호 찾기 </b> </div>
            </div>
 
 
@@ -50,6 +66,8 @@ const SignInModal = ({ show, onHide }) => {
         </Modal.Body>
       </Container>
     </Modal>
+       </>
+   
   );
 };
 
