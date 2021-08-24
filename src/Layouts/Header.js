@@ -54,6 +54,7 @@ const Header = () => {
         </Navbar>
         <Link to='/main/exerLabel'>운동정의</Link>
         <Link to ='/main/calender'>캘린더</Link>
+        <Link to ='/main/exerLabelPage'>운동라벨</Link>
       </header>
     </>
   );
