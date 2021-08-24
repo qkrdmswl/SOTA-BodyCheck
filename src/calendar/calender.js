@@ -5,6 +5,7 @@ import Container from "./dietTable";
 import MyApp from "./calendarR";
 import Preview from "./preview";
 import { Link } from "react-router-dom";
+import Exer from " exercise/ExerList";
 
 function App() {
   return (
@@ -23,7 +24,9 @@ function App() {
         <section>
           <div className="left">
             <div className="calendar">
-            <Link to='/main/exerLabel'>운동정의</Link>
+              
+            <Link to='/main/exerLabel'  >운동정의</Link>
+
               <MyApp />
             </div>
             <div className="diet-table">

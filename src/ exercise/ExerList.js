@@ -81,15 +81,15 @@ class Exer extends Component {
           })
       }
       return (
-          <div id="운동List">
+          <div id="전체">
               <h1>운동List</h1>
-              <input
+              <input id="검색input"
                   name="keyword"
                   placeholder="Search"
                   value={this.state.keyword}
                   onChange={this.handleChange}
               />
-              <div>{mapToComponents(this.state.exerData)}</div>
+              <div id="exerList" style={{"margin":"10px"}}>{mapToComponents(this.state.exerData)}</div>
               <ExerDetails
                   isSelected={this.state.selectedKey != -1}
                   exer={this.state.exerData[this.state.selectedKey]}

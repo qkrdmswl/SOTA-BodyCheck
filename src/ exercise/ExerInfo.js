@@ -51,8 +51,8 @@ class ExerDetails extends Component {
 
 
         const details = (
-            <div id="details">
-                <h4>{this.props.exer.name}</h4>
+            <div id="details" style={{ "padding":"10px" , "backgroundColor":"rgb(102,180,280,0.5)","border-radius":"10px","box-shadow":"5px 5px rgb(000,051,102,0.1)" }}>
+                <h5>{this.props.exer.name}</h5>
                 <p>{this.props.exer.weight} kg</p>
                 <p>{this.props.exer.count} 회</p>
                 <p>{this.props.exer.sets} 세트</p>
@@ -101,16 +101,17 @@ class ExerDetails extends Component {
         )
         const view = this.state.isEdit ? edit : details;   // isEdit가 true이면 edit 화면, false이면 details를 보여줄 변수(view)선언
 
-        const blank = (<div id="blank">Not Selected</div>)
+        const blank = (<div id="blank" style={{  }} >운동을 설정해 주세요!</div>)
         return (
-            <div>
+            <div id="운동정보" style={{ "padding": "30px" }}>
                 <h2>운동정보</h2>
                 {this.props.isSelected ? view : blank}  {/*선택된 상태이면 view를, 아니면 blank를 보여주도록 detail -> view로 수정*/}
                 <p>
-                    <button onClick={this.handleToggle}> {/* Edit 버튼 추가, 토글 함수에 연결 */}
+                    <button onClick={this.handleToggle} style={{"border-radius":"5px", "background-color":"rgb(000,204,255)"}}> {/* Edit 버튼 추가, 토글 함수에 연결 */}
                         {this.state.isEdit ? 'OK' : 'Edit'}  {/* isEdit가 true이면(수정 완료) OK가 표시되도록 */}
                     </button>
-                    <button onClick={this.props.onRemove}>Remove</button> {/* 삭제 버튼 추가 */}
+                    <button onClick={this.props.onRemove} style={{"border-radius":"5px", "margin-left":"5px", "background-color":"rgb(255,051,000)", "color":"white"}}>
+                        Remove</button> {/* 삭제 버튼 추가 */}
                 </p>
             </div>
             

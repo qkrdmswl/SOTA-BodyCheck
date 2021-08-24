@@ -40,7 +40,7 @@ import React from 'react';
   
       render() {
           return (
-              <div id="운동생성">
+              <div id="운동생성" style={{ "width": "30%" }}>
                   <h2>운동 생성</h2>
                   <p>
                       <input
