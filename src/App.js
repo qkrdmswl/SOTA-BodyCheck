@@ -2,7 +2,7 @@ import React, { useState, Component } from 'react';
 //exer
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { StateMachineProvider, createStore } from "little-state-machine";
-import MainPage from './ exercise/MainPage';
+import MainPage from './MainPage';
 //import exerLabel from './pages/exerLabel';
 import InputSample from './ exercise/exerLabel';
 //import Header from './components/Header';
