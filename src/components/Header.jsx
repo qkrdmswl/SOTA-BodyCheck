@@ -9,9 +9,7 @@ function Header({ location, history }) {
         <li>
           <button onClick={() => history.push('/main')}>홈</button>
         </li>
-        <li>
-          <Link to='/main/exerLabel'>운동정의</Link>
-        </li>
+
       </ul>
     </header>
   );

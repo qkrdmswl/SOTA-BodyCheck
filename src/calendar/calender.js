@@ -1,9 +1,10 @@
 import "./App.css";
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
-import Container from "../contents/dietTable";
-import MyApp from "../contents/calendar";
-import Preview from "../contents/preview";
+import Container from "./dietTable";
+import MyApp from "./calendarR";
+import Preview from "./preview";
+import { Link } from "react-router-dom";
 
 
 // import React from 'react';
@@ -27,6 +28,7 @@ function App() {
         <section>
           <div className="left">
             <div className="calendar">
+            <Link to='/main/exerLabel'>운동정의</Link>
               <MyApp />
             </div>
             <div className="diet-table">
