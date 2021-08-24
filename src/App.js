@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, Component } from 'react';
 //exer
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { StateMachineProvider, createStore } from "little-state-machine";
-import MainPage from './pages/MainPage';
+import MainPage from './MainPage';
 //import exerLabel from './pages/exerLabel';
-import InputSample from './pages/exerLabel';
+import InputSample from './ exercise/exerLabel';
 //import Header from './components/Header';
 //user
 import { Container } from "react-bootstrap";
@@ -19,9 +19,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 //import Container from "./contents/dietTable";
 //import MyApp from "./contents/calendar";
 //import Preview from "./contents/preview";
-import Calender from "./pages/calender";
-import exerLabelPage from "./pages/exerLabelPage";
-import Step1 from "./pages/exerLabel";
+import Calender from "./calendar/calender";
+import exerLabelPage from "./ exercise/exerLabelPage";
+import Step1 from "./ exercise/exerLabel";
 
 function App() {
   return (
