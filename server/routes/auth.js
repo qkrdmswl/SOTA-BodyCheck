@@ -73,6 +73,16 @@ router.post('/login',
         }
     });
 
+router.get('/test', isLoggedIn, async (req, res, next) => {
+    try {
+        const {token, id} = req.user;
+        return res.status(201).json({token, id});
+    } catch (error) {
+        console.error(error);
+        return next(error);
+    }
+});
+
 router.get('/me', isLoggedIn, async (req, res, next) => {
     try {
         const user = await User.findOne({ where: { id: req.decoded.id } });
