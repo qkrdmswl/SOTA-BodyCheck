@@ -43,17 +43,37 @@ middlewares.updateForEach = async (record, fields) => {
   return isSame;
 }
 
+middlewares.verifyEmail = (email) => {
+  var regExp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i
+  return regExp.test(email);
+}
+
+middlewares.verifyPassword = (password) => {
+  //  8 ~ 10자 영문, 숫자 조합
+  var regExp = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z]{8,10}$/
+  return regExp.test(password)
+}
 
 // middlewares
-middlewares.isLoggedIn = (req, res, next) => {
-  const {token, id} = req.signedCookies.bodycheck;
+middlewares.isLoggedIn = async (req, res, next) => {
+  let {token, id, exp, refreshToken} = req.signedCookies.bodycheck;
   if (!token) {
     return res.status(401).json(middlewares.getFailure('token is required'));
   }
-  else {
-    req.user = {token, id};
-    next();
+  if (exp < Date.now()){ // access token이 만료된 경우 refresh token을 보내 검증 후 새로운 access token과 expire를 반환
+    // refresh token이 유효한지 검사
+    const newTokenResult = await axios.post(`${API_URL}/auth/refresh`, {id, refreshToken});
+    token = newTokenResult.data.data.token;
+    exp = newTokenResult.data.data.exp;
+    res.cookie('bodycheck', {token, id, exp, refreshToken}, {
+      httpOnly: true,
+      sameSite: true,
+      signed: true,
+      secure: false
+    });
   }
+  req.user = {token, id};
+  next();
 };
 
 middlewares.getNoSuchResource = (name, where) => {
