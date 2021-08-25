@@ -56,16 +56,16 @@ middlewares.verifyPassword = (password) => {
 
 // middlewares
 middlewares.isLoggedIn = async (req, res, next) => {
-  let {token, id, expire, refreshToken} = req.signedCookies.bodycheck;
+  let {token, id, exp, refreshToken} = req.signedCookies.bodycheck;
   if (!token) {
     return res.status(401).json(middlewares.getFailure('token is required'));
   }
-  if (expire < Date.now()){ // access token이 만료된 경우 refresh token을 보내 검증 후 새로운 access token과 expire를 반환
+  if (exp < Date.now()){ // access token이 만료된 경우 refresh token을 보내 검증 후 새로운 access token과 expire를 반환
     // refresh token이 유효한지 검사
     const newTokenResult = await axios.post(`${API_URL}/auth/refresh`, {id, refreshToken});
     token = newTokenResult.data.data.token;
-    expire = newTokenResult.data.data.expire;
-    res.cookie('bodycheck', {token, id, expire, refreshToken}, {
+    exp = newTokenResult.data.data.exp;
+    res.cookie('bodycheck', {token, id, exp, refreshToken}, {
       httpOnly: true,
       sameSite: true,
       signed: true,
