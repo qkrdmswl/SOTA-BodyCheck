@@ -7,10 +7,11 @@ const cookieParser = require('cookie-parser');
 
 dotenv.config();
 const authRouter = require('./routes/auth');
+const userRouter = require('./routes/users');
 
 
 const app = express();
-app.set('port', process.env.PORT || 5001);
+app.set('port', process.env.PORT || 3001);
 app.set('view engine', 'html');
 app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: false }));
@@ -33,6 +34,7 @@ app.use(session({
 }));
 
 app.use('/auth', authRouter);
+app.use('/user', userRouter);
 
 app.listen(app.get('port'), () => {
     console.log(app.get('port'), '번 포트 활성화');
