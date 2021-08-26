@@ -1,14 +1,19 @@
 const express = require('express');
-const { isLoggedIn, getSuccess, getFailure, getValidationError } = require('./middlewares');
-const { User, Variable, VariableType, Record } = require('../models');
+const axios = require('axios');
+const { isLoggedIn, getSuccess, getFailure, verifyPassword } = require('./middlewares');
+const {API_URL} = require('../config/const');
 const router = express.Router();
 
-router.get('/', isLoggedIn, async (req, res, next) => {
+router.get('/', async (req, res, next) => {
     try {
         // query options : paranoid, email
         // if (paranoid) return {User with {deletedAt} include deleted records}
 
         let {paranoid, email} = req.query;
+
+        if(!email){
+            return res.json(getFailure('email is required in query'));
+        }
 
         if(paranoid){
             if(paranoid === 'true' || paranoid === '1'){
@@ -17,25 +22,10 @@ router.get('/', isLoggedIn, async (req, res, next) => {
                 paranoid = false;
             }
         }
+        console.log(paranoid, email);
+        const userResult = await axios.get(`${API_URL}/users`, {params: {paranoid, email}});
 
-        if(email){
-            const user = await User.findOne({
-                where: {email},
-                attributes: {exclude: ['password']},
-                paranoid,
-            });
-            if(!user){
-                return res.status(404).json(getFailure(req.originalUrl));
-            }
-            return res.status(200).json(getSuccess(user));
-        }
-
-        const users = await User.findAll({
-            attributes: {exclude: ['password']},
-            paranoid,
-        })
-
-        return res.status(200).json(getSuccess(users));
+        return res.status(200).json(getSuccess(userResult.data));
     } catch (err) {
         console.error(err);
         next(err);
@@ -73,46 +63,33 @@ router.get('/:id', isLoggedIn, async (req, res, next) => {
     }
 })
 
-router.patch('/:id', isLoggedIn, async (req, res, next) => {
+
+router.patch('/', isLoggedIn, async (req, res, next) => {
     try {
-        // params: id
-        // query: email
-        const {id} = req.params;
-        const {email} = req.query;
-        if(!email){
-            return res.status(400).json(getFailure(req.originalUrl));
+        const {id, token} = req.user;
+        const {password} = req.body;
+
+        if(!password){
+            return res.status(400).json(getFailure('password is required in body'));
+        }
+        if(!verifyPassword(password)){
+            return res.status(400).json(getFailure(`password expression error: ${password}`));
         }
 
-        const user = await User.findOne({
-            where: {id},
-            attributes: {exclude: ['password']},
+        const userResult = await axios({
+            method: 'PATCH',
+            url: `${API_URL}/users/${id}`,
+            headers: {'bodycheck-access-token': token},
+            data: {password},
         });
-        if(!user){
-            return res.status(404).json(getFailure(req.originalUrl));
-        }
 
-        // 바꿀 게 없으면
-        if(email == user.getDataValue('email')){
-            return res.status(204).json();
-        }
-
-        const exUser = await User.findOne({
-            where: {email},
-            paranoid: false,
-        });
-        console.log(exUser);
-        if(exUser){
-            return res.status(400).json(req.originalUrl + ' The email already exists. Email must be unique');
-        }
-
-        await user.update({email});
-
-        return res.status(201).json(getSuccess(user));
-    } catch (err) {
-        console.error(err);
-        next(err);
+        return res.status(userResult.status).json(userResult.data);
+    } catch (error) {
+        console.error(error);
+        return next(error);
     }
-})
+});
+
 
 router.delete('/:id', isLoggedIn, async (req, res, next) => {
     try {

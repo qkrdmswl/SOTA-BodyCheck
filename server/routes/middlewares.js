@@ -56,6 +56,9 @@ middlewares.verifyPassword = (password) => {
 
 // middlewares
 middlewares.isLoggedIn = async (req, res, next) => {
+  if(!req.signedCookies.bodycheck){
+    return res.status(401).json(middlewares.getFailure('cookie is required to identify user, log in first'));
+  }
   let {token, id, exp, refreshToken} = req.signedCookies.bodycheck;
   if (!token) {
     return res.status(401).json(middlewares.getFailure('token is required'));
@@ -71,6 +74,7 @@ middlewares.isLoggedIn = async (req, res, next) => {
       signed: true,
       secure: false
     });
+    console.log('token refreshed', new Date().toLocaleString());
   }
   req.user = {token, id};
   next();
