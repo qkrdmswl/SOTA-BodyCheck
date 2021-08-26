@@ -58,6 +58,9 @@ router.post('/login',
 
             const { email, password } = req.body;
             const tokenResult = await axios.post(`${API_URL}/auth/login`, {email, password});
+            if(!tokenResult.data.success){
+                return res.json(tokenResult.data);
+            }
             const {token, exp, refreshToken} = tokenResult.data.data;
 
             const userResult = await axios({
@@ -79,6 +82,30 @@ router.post('/login',
         }
     });
 
+router.get('/logout', isLoggedIn, async (req, res, next) => {
+    try {
+        res.clearCookie('bodycheck');
+        return res.status(204).json();
+    } catch (error) {
+        console.error(error);
+        return next(error);
+    }
+});
 
+router.get('/me', isLoggedIn, async (req, res, next) => {
+    try {
+        const {token} = req.user;
+        const userResult = await axios({
+            method: 'GET',
+            url: `${API_URL}/auth/me`,
+            headers: {'bodycheck-access-token': token},
+        });
+
+        return res.status(200).json(userResult.data);
+    } catch (error) {
+        console.error(error);
+        return next(error);
+    }
+});
 
 module.exports = router;
