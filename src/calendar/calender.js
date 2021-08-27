@@ -28,7 +28,7 @@ function App() {
           <div className="left">
             <div className="calendar">
               
-             {/*<Exer/>*/}
+             {<Exer/>}
               <MyApp />
             </div>
             <div className="diet-table">

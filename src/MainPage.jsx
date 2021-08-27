@@ -6,7 +6,7 @@ import Exer from 'exercise/ExerList';
 function MainPage() {
   return <div className='main'>
   <Header/>
-  <Exer />
+  {/*<Exer />*/}
   <Calender />
   </div>;
 }
