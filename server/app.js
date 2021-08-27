@@ -7,7 +7,9 @@ const cookieParser = require('cookie-parser');
 
 dotenv.config();
 const authRouter = require('./routes/auth');
-const userRouter = require('./routes/users');
+const userRouter = require('./routes/user');
+const variableRouter = require('./routes/variable');
+const exerciseRouter = require('./routes/exercise');
 
 
 const app = express();
@@ -20,7 +22,7 @@ app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
     next();
 });
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '../build')));
 
 app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(session({
@@ -35,6 +37,12 @@ app.use(session({
 
 app.use('/auth', authRouter);
 app.use('/user', userRouter);
+app.use('/variable', variableRouter);
+app.use('/exercise', exerciseRouter);
+
+// app.get('*', async (req, res) => {
+//     res.sendFile(path.join(__dirname, '/../build/index.html'));
+// });
 
 app.listen(app.get('port'), () => {
     console.log(app.get('port'), '번 포트 활성화');
