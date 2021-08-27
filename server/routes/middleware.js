@@ -54,6 +54,20 @@ middlewares.verifyPassword = (password) => {
   return regExp.test(password)
 }
 
+middlewares.getTrueFalse = (str) => {
+  let res = '';
+  if(str){
+    if(str === 'true' || str === '1'){
+        res = true;
+    } else if (str === 'false' || str === '0'){
+        res = false;
+    } else {
+        res = 'error';
+    }
+  }
+  return res;
+}
+
 // middlewares
 middlewares.isLoggedIn = async (req, res, next) => {
   if(!req.signedCookies.bodycheck){
@@ -65,7 +79,9 @@ middlewares.isLoggedIn = async (req, res, next) => {
   }
   if (exp < Date.now()){ // access token이 만료된 경우 refresh token을 보내 검증 후 새로운 access token과 expire를 반환
     // refresh token이 유효한지 검사
-    const newTokenResult = await axios.post(`${API_URL}/auth/refresh`, {id, refreshToken});
+    const newTokenResult = await axios.post(`${API_URL}/auth/refresh`, {id, refreshToken}).catch((err)=>{
+      return res.status(err.response.status).json(middlewares.getFailure(err.response.data));
+    });
     token = newTokenResult.data.data.token;
     exp = newTokenResult.data.data.exp;
     res.cookie('bodycheck', {token, id, exp, refreshToken}, {

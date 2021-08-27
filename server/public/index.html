@@ -13,6 +13,24 @@
           },
         });
         console.log(tokenResult.data);
+
+        const name = document.getElementById("exercise-name").value;
+        const variableNames = document.getElementsByClassName("variable-name");
+        const variableTypes = document.getElementsByClassName("variable-type");
+        let variables = new Array();
+        for (let i = 0; i < variableNames.length; i++) {
+          variables[i] = {};
+          variables[i].name = variableNames[i].value;
+          variables[i].type = variableTypes[i].value;
+        }
+        await axios({
+          method: "POST",
+          url: "exercise/me",
+          data: {
+            name,
+            variables,
+          },
+        });
       };
     </script>
   </head>
