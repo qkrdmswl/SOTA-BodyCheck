@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { StateMachineProvider, createStore } from "little-state-machine";
 import MainPage from './MainPage';
 //import exerLabel from './pages/exerLabel';
-import InputSample from './ exercise/ExerInfo';
+import InputSample from './exercise/ExerInfo';
 //import Header from './components/Header';
 //user
 import { Container } from "react-bootstrap";
@@ -16,9 +16,9 @@ import Layout from './Layouts/Layout';
 //import HomePage from './pages/HomePage';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Calender from "./calendar/calender";
-import ExerList from './ exercise/ExerList';
-import Exer from './ exercise/ExerList';
-import CreateExerLabel from ' exercise/CreateExerLabel';
+import ExerList from './exercise/ExerList';
+import Exer from './exercise/ExerList';
+import CreateExerLabel from 'exercise/CreateExerLabel';
 
 function App() {
   return (

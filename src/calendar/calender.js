@@ -5,8 +5,8 @@ import Container from "./dietTable";
 import MyApp from "./calendarR";
 import Preview from "./preview";
 import { Link } from "react-router-dom";
-import CreateExerLabel from " exercise/CreateExerLabel";
-import Exer from " exercise/ExerList";
+import CreateExerLabel from "exercise/CreateExerLabel";
+import Exer from "exercise/ExerList";
 
 function App() {
   return (

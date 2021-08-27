@@ -1,4 +1,4 @@
-import React, { useState,Component } from 'react';
+import React, { useState,Component, setState } from 'react';
 import ExerDetails from './ExerInfo';
 import CreateExerLabel from './CreateExerLabel';
 import ExerInfo from './ContactInfo';
@@ -9,6 +9,7 @@ class Exer extends Component {
       this.state = {
           selectedKey: -1,
           keyword: '',
+          isCreate:false,
           exerData: [{
               name: '달리기',
               weight: '0',
@@ -33,6 +34,7 @@ class Exer extends Component {
       this.handleCreate = this.handleCreate.bind(this);
       this.handleRemove = this.handleRemove.bind(this);
       this.handleEdit = this.handleEdit.bind(this);
+      
 
   }
 
@@ -78,6 +80,7 @@ class Exer extends Component {
       });
   }
 
+
   render() {
 
       const mapToComponents = (data) => {
@@ -107,9 +110,9 @@ class Exer extends Component {
                   style={{"margin-top":"20px"}}/>
               <div id="exerList" style={{"margin":"10px"}}>{mapToComponents(this.state.exerData)}</div>
              
-             <Link to ="/as@a.com/exercise/new">
-            <button id ="create"> + </button>
-            </Link>
+            {/* <Link to ="/as@a.com/exercise/new">
+            <button id ="create" onClick={this.handlePageCreate}> + </button>
+            </Link> */}
              
               <ExerDetails
                   isSelected={this.state.selectedKey != -1}
@@ -117,9 +120,9 @@ class Exer extends Component {
                   onRemove={this.handleRemove}
                   onEdit={this.handleEdit}    // onEdit 이벤트를 handleEdit 함수로 연결
               />
-            { /* <CreateExerLabel //배열에 데이터 삽입부분
+            {  <CreateExerLabel //배열에 데이터 삽입부분
                   onCreate={this.handleCreate} 
-            style={{ "visibility":"hidden" }} /> */}
+             /> }
         </div>
       );
   }

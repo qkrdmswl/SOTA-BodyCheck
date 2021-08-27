@@ -1,14 +1,12 @@
 import React from 'react';
 import Header from './Layouts/Header';
-
-//import InputSample from './exerLabel';
 import Calender from "./calendar/calender";
-import ExerFullPage from "./ exercise/exerFullPage";
+import Exer from 'exercise/ExerList';
 
 function MainPage() {
   return <div className='main'>
   <Header/>
-  <ExerFullPage />
+  <Exer />
   <Calender />
   </div>;
 }
