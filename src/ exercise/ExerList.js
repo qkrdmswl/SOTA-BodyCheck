@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React, { useState,Component } from 'react';
 import ExerDetails from './ExerInfo';
 import CreateExerLabel from './CreateExerLabel';
 import ExerInfo from './ContactInfo';
-
+import { Link } from 'react-router-dom';
 class Exer extends Component {
   constructor(props) {
       super(props);
@@ -10,11 +10,22 @@ class Exer extends Component {
           selectedKey: -1,
           keyword: '',
           exerData: [{
-              name: '예시',
-              weight: '42',
-              count:'3',
-              sets:'3'
-          }]
+              name: '달리기',
+              weight: '0',
+              count:'0',
+              sets:'0'
+          },{
+            name: '플랭크',
+            weight: '0',
+            count:'1',
+            sets:'3'
+        },{
+            name: '스쿼트',
+            weight: '0',
+            count:'30',
+            sets:'5'
+        }
+        ]
       }
       this.handleChange = this.handleChange.bind(this);
       this.handleClick = this.handleClick.bind(this);
@@ -32,10 +43,10 @@ class Exer extends Component {
   }
 
   handleClick(key) {
-      this.setState({
-          selectedKey: key
-      })
-  }
+    this.setState({
+        selectedKey: key
+    })
+}
 
   handleCreate(exer) {
       var newExer = Array.from(this.state.exerData);
@@ -43,6 +54,7 @@ class Exer extends Component {
       this.setState({
           exerData: newExer
       });
+     // this.props.onCreate(exer);
   }
 
   handleRemove() {
@@ -80,28 +92,35 @@ class Exer extends Component {
               />);
           })
       }
-      
       return (
           <div id="전체">
+          {/*}   <Link to ="/main">
+            <button className="title">Body Check</button>
+      </Link>*/ }
+            <hr/>
                {/*운동List*/}
               <input id="검색input"
                   name="keyword"
                   placeholder="Search"
                   value={this.state.keyword}
                   onChange={this.handleChange}
-              />
+                  style={{"margin-top":"20px"}}/>
               <div id="exerList" style={{"margin":"10px"}}>{mapToComponents(this.state.exerData)}</div>
-             <button id ="create">create </button>
+             
+             <Link to ="/as@a.com/exercise/new">
+            <button id ="create"> + </button>
+            </Link>
+             
               <ExerDetails
                   isSelected={this.state.selectedKey != -1}
                   exer={this.state.exerData[this.state.selectedKey]}
                   onRemove={this.handleRemove}
                   onEdit={this.handleEdit}    // onEdit 이벤트를 handleEdit 함수로 연결
               />
-              <CreateExerLabel
-                  onCreate={this.handleCreate}
-              />
-          </div>
+            { /* <CreateExerLabel //배열에 데이터 삽입부분
+                  onCreate={this.handleCreate} 
+            style={{ "visibility":"hidden" }} /> */}
+        </div>
       );
   }
 }

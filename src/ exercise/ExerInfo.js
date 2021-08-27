@@ -48,8 +48,6 @@ class ExerDetails extends Component {
     }
 
     render() {
-
-
         const details = (
             <div id="details" style={{ "padding":"10px" , "backgroundColor":"rgb(102,180,280,0.3)","border-radius":"10px","box-shadow":"5px 5px rgb(000,051,120,0.03)" }}>
                 <h5>{this.props.exer.name}</h5>
@@ -120,7 +118,7 @@ class ExerDetails extends Component {
         )
         const view = this.state.isEdit ? edit : details;   // isEdit가 true이면 edit 화면, false이면 details를 보여줄 변수(view)선언
 
-        const blank = (<div id="blank" style={{ "visibility":"hidden" }} >운동을 설정해 주세요!</div>)
+        const blank = (<div id="blank" style={{ "visibility":"hidden" }} >안보이게 처리한곳</div>)
         
         return (
             <div id="운동정보" style={{ "padding": "30px"}}>

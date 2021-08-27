@@ -1,10 +1,12 @@
 import React from 'react';
-<link rel="stylesheet" href="./exercise/exer.css" type="text/css" />
-
+import Exer from './ExerList';
+import ExerInfo from './ContactInfo';
+import { Link } from 'react-router-dom';
   export default class CreateExerLabel extends React.Component {
       constructor(props) {
           super(props);
           this.state = {
+              isCreate:false,
               name: '',
               weight: '',
               count:'',
@@ -12,8 +14,18 @@ import React from 'react';
           };
           this.handleChange = this.handleChange.bind(this);
           this.handleClick = this.handleClick.bind(this);
+          //this.handleCreate = this.handleCreate.bind(this);
       }
   
+      handleCreate(exer) {
+        var newExer = Array.from(this.state.exerData);
+        newExer.push(exer);
+        this.setState({
+            exerData: newExer
+        });
+        this.props.onCreate(exer);
+    }
+
       handleChange(e) {   // input 창에 입력 가능하도록 만듬
           let nextState = {};
           nextState[e.target.name] = e.target.value;	// name에는 name입력값, weight에는 weight 입력값을 각각 저장
@@ -29,7 +41,7 @@ import React from 'react';
           };
   
           this.props.onCreate(exer);
-  
+
           this.setState({
               name: '',
               weight: '',
@@ -37,43 +49,49 @@ import React from 'react';
               sets:''
           });
       }
-  
+      
       render() {
-          return (
-              <div id="운동생성" style={{ "width": "30%" }}>
-                  <h2>운동 생성</h2>
-                  <p>
-                      <input
-                          type="text"
-                          name="name"
-                          placeholder="운동이름"
-                          value={this.state.name}
-                          onChange={this.handleChange}
-                      />
-                      <input
-                          type="text"
-                          name="weight"
-                          placeholder="무게"
-                          value={this.state.weight}
-                          onChange={this.handleChange}
-                      />
-                      <input
-                          type="number"
-                          name="count"
-                          placeholder="횟수"
-                          value={this.state.count}
-                          onChange={this.handleChange}
-                      />
-                      <input
-                          type="number"
-                          name="sets"
-                          placeholder="셋트"
-                          value={this.state.sets}
-                          onChange={this.handleChange}
-                      />
-                  </p>
-                  <button onClick={this.handleClick}>Create</button>
-              </div>
-          )
+      return (
+        <div id="운동생성" style={{ "width": "30%" }}>
+
+        <h2>운동 생성</h2>
+        <p>
+            <input
+                type="text"
+                name="name"
+                placeholder="운동이름"
+                value={this.state.name}
+                onChange={this.handleChange}
+            />
+            <input
+                type="text"
+                name="weight"
+                placeholder="무게"
+                value={this.state.weight}
+                onChange={this.handleChange}
+            />
+            <input
+                type="number"
+                name="count"
+                placeholder="횟수"
+                value={this.state.count}
+                onChange={this.handleChange}
+            />
+            <input
+                type="number"
+                name="sets"
+                placeholder="셋트"
+                value={this.state.sets}
+                onChange={this.handleChange}
+            />
+        </p>
+        {<button onClick={this.handleClick}>
+            {this.state.isCreate ? "ok":"Create"}
+            </button>}
+        <hr/>
+
+            </div>
+     
+          );
       }
   }

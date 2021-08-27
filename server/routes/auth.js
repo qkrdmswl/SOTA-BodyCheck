@@ -1,7 +1,7 @@
 const express = require('express');
 const axios = require('axios');
 const {API_URL} = require('../config/const');
-const { isLoggedIn, getValidationError, getNoSuchResource, getSuccess, getFailure, verifyEmail, verifyPassword} = require('./middlewares');
+const { isLoggedIn, getValidationError, getNoSuchResource, getSuccess, getFailure, verifyEmail, verifyPassword} = require('./middleware');
 
 const router = express.Router();
 axios.defaults.headers.origin = 'http://localhost:5001';
@@ -18,7 +18,12 @@ router.post('/join', async (req, res, next) => {
             return res.status(400).json(getFailure(`password expression error: ${password}`));
         }
 
-        const userResult = await axios.post(`${API_URL}/auth/join`, {email, password});
+        const userResult = await axios({
+            method: 'POST',
+            url: `${API_URL}/auth/join`, 
+            headers: {'bodycheck-client-secret': process.env.CLIENT_SECRET},
+            data: {email, password}
+        });
         if(!userResult.data.success){
             return res.json(getFailure('email already exists'));
         }
@@ -57,7 +62,12 @@ router.post('/login',
         try {
 
             const { email, password } = req.body;
-            const tokenResult = await axios.post(`${API_URL}/auth/login`, {email, password});
+            const tokenResult = await axios({
+                method: 'POST',
+                url: `${API_URL}/auth/login`, 
+                headers: {'bodycheck-client-secret': process.env.CLIENT_SECRET},
+                data: {email, password}
+            });
             if(!tokenResult.data.success){
                 return res.json(tokenResult.data);
             }

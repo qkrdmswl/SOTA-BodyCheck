@@ -17,17 +17,20 @@ import Layout from './Layouts/Layout';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Calender from "./calendar/calender";
 import ExerList from './ exercise/ExerList';
+import Exer from './ exercise/ExerList';
+import CreateExerLabel from ' exercise/CreateExerLabel';
 
 function App() {
   return (
     <>
        <StateMachineProvider>
       <Router>
-        <Route path='/main' component={Header} />
         <Switch>
-          <Route path='/main/exerLabel' component={ExerList} />
+          <Route path='/as@a.com/exercise' component={ExerList} />
+          <Route path='/as@a.com/exercise/new' component={Exer} />
           <Route path='/' component={MainPage} />
-          <Route path='/main/calender' component={Calender} />        
+          {/*<Route path='/main/calender' component={Calender} /> */} 
+          <Route path='/as@a.com/calendar ' component={Calender} />
           <Route render={() => <div className='error'>링크똑디 안쓰나</div>} />         
         </Switch>
       </Router>
