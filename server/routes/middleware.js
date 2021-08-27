@@ -79,7 +79,12 @@ middlewares.isLoggedIn = async (req, res, next) => {
   }
   if (exp < Date.now()){ // access token이 만료된 경우 refresh token을 보내 검증 후 새로운 access token과 expire를 반환
     // refresh token이 유효한지 검사
-    const newTokenResult = await axios.post(`${API_URL}/auth/refresh`, {id, refreshToken}).catch((err)=>{
+    const newTokenResult = await axios({
+      method: 'POST',
+      url: `${API_URL}/auth/refresh`, 
+      headers: {'bodycheck-access-token': token},
+      data: {refreshToken},
+    }).catch((err)=>{
       return res.status(err.response.status).json(middlewares.getFailure(err.response.data));
     });
     token = newTokenResult.data.data.token;
