@@ -1,6 +1,6 @@
 const express = require('express');
 const axios = require('axios');
-const { isLoggedIn, getSuccess, getFailure, verifyPassword } = require('./middlewares');
+const { isLoggedIn, getSuccess, getFailure, verifyPassword } = require('./middleware');
 const { API_URL } = require('../config/const');
 const router = express.Router();
 
@@ -12,7 +12,7 @@ router.get('/me', isLoggedIn, async (req, res, next) => {
             method: 'GET',
             url: `${API_URL}/userProfiles`,
             headers: { 'bodycheck-access-token': token },
-            data: { UserId: id }
+            params: { UserId: id }
         });
 
         return res.status(profileResult.status).json(profileResult.data);
@@ -80,9 +80,9 @@ router.patch('/me', isLoggedIn, async (req, res, next) => {
             method: 'GET',
             url: `${API_URL}/userProfiles`,
             headers: { 'bodycheck-access-token': token },
-            data: { UserId: id }
+            params: { UserId: id }
         });
-        const profileId = profileResult.data.data[0].id;
+        const profileId = profileResult.data.data.id;
         const updateResult = await axios({
             method: 'PATCH',
             url: `${API_URL}/userProfiles/${profileId}`,

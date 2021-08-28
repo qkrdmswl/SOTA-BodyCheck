@@ -10,6 +10,7 @@ const authRouter = require('./routes/auth');
 const userRouter = require('./routes/user');
 const variableRouter = require('./routes/variable');
 const exerciseRouter = require('./routes/exercise');
+const profileRouter = require('./routes/profile');
 
 
 const app = express();
@@ -39,6 +40,7 @@ app.use('/auth', authRouter);
 app.use('/user', userRouter);
 app.use('/variable', variableRouter);
 app.use('/exercise', exerciseRouter);
+app.use('/profile', profileRouter);
 
 // app.get('*', async (req, res) => {
 //     res.sendFile(path.join(__dirname, '/../build/index.html'));
