@@ -1,10 +1,39 @@
 const express = require('express');
 const { isLoggedIn, getSuccess, getFailure, getValidationError, getTrueFalse } = require('./middleware');
+const { request, getAPI, postAPI, patchAPI, deleteAPI} = require('./request');
 const { axios } = require('axios');
 const { API_URL } = require('../config/const');
 const router = express.Router();
 
 
+
+router.post('/me', isLoggedIn, async (req, res, next) => {
+    try {
+        // 로그인 유저의 운동에 대한 변수를 생성
+        // body: {name, type}
+        const { name, type, ExerciseId } = req.body;
+        const token = req.user.token;
+        const UserId = req.user.id;
+
+        const exerciseGetResult = await getAPI(`/exercises/${ExerciseId}`, token).catch((err) => {
+            return res.status(err.response.status).json(err.response.data);
+        })
+        if(UserId != exerciseGetResult.data.data.UserId){
+            return res.status(400).json(getFailure(req.originalUrl + "can't create other's"));
+        }
+
+        const variablePostResult = await postAPI(`/variables`, token, {name, VariableTypeId: type, ExerciseId}).catch((err) => {
+            return res.status(err.response.status).json(err.response.data);
+        })
+
+
+        return res.status(201).json(variablePostResult.data);
+
+    } catch (err) {
+        console.error(err);
+        next(err);
+    }
+})
         
 router.patch('/:id', isLoggedIn, async (req, res, next) => {
     try {
