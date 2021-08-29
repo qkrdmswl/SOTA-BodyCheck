@@ -1,6 +1,4 @@
-const jwt = require('jsonwebtoken');
-const axios = require('axios');
-const {API_URL} = require('../config/const');
+const { postAPI } = require('./request');
 
 let middlewares = {};
 
@@ -70,35 +68,33 @@ middlewares.getTrueFalse = (str) => {
 
 // middlewares
 middlewares.isLoggedIn = async (req, res, next) => {
-  if(!req.signedCookies.bodycheck){
-    return res.status(401).json(middlewares.getFailure('cookie is required to identify user, log in first'));
+  try {
+
+    if(!req.signedCookies.bodycheck){
+      return res.status(401).json(middlewares.getFailure('cookie is required to identify user, log in first'));
+    }
+    let {token, id, exp, refreshToken} = req.signedCookies.bodycheck;
+    if (!token) {
+      return res.status(401).json(middlewares.getFailure('token is required'));
+    }
+    if (exp < Date.now()){ // access token이 만료된 경우 refresh token을 보내 검증 후 새로운 access token과 expire를 반환
+      // refresh token이 유효한지 검사
+      const newTokenResult = await postAPI('/auth/refresh', token, {refreshToken, id});
+      token = newTokenResult.data.data.token;
+      exp = newTokenResult.data.data.exp;
+      res.cookie('bodycheck', {token, id, exp, refreshToken}, {
+        httpOnly: true,
+        sameSite: true,
+        signed: true,
+        secure: false
+      });
+      console.log('token refreshed', new Date().toLocaleString());
+    }
+    req.user = {token, id};
+    next();
+  } catch (err){
+
   }
-  let {token, id, exp, refreshToken} = req.signedCookies.bodycheck;
-  if (!token) {
-    return res.status(401).json(middlewares.getFailure('token is required'));
-  }
-  if (exp < Date.now()){ // access token이 만료된 경우 refresh token을 보내 검증 후 새로운 access token과 expire를 반환
-    // refresh token이 유효한지 검사
-    const newTokenResult = await axios({
-      method: 'POST',
-      url: `${API_URL}/auth/refresh`, 
-      headers: {'bodycheck-access-token': token},
-      data: {refreshToken},
-    }).catch((err)=>{
-      return res.status(err.response.status).json(middlewares.getFailure(err.response.data));
-    });
-    token = newTokenResult.data.data.token;
-    exp = newTokenResult.data.data.exp;
-    res.cookie('bodycheck', {token, id, exp, refreshToken}, {
-      httpOnly: true,
-      sameSite: true,
-      signed: true,
-      secure: false
-    });
-    console.log('token refreshed', new Date().toLocaleString());
-  }
-  req.user = {token, id};
-  next();
 };
 
 middlewares.getNoSuchResource = (name, where) => {

@@ -1,7 +1,7 @@
 const express = require('express');
 const axios = require('axios');
 const { isLoggedIn, getSuccess, getFailure, getValidationError } = require('./middleware');
-const { request, getAPI, postAPI, patchAPI, deleteAPI} = require('./request');
+const {  getAPI, postAPI, patchAPI, deleteAPI} = require('./request');
 const { API_URL } = require('../config/const');
 const router = express.Router();
 
@@ -11,12 +11,12 @@ router.post('/me', isLoggedIn, async (req, res, next) => {
         const { token, id } = req.user;
         const { name, variables } = req.body;
 
-        const exerciseResult = await postAPI('/exercises', token, {UserId: id, name});
-        const exercise = exerciseResult.data.data;
+        const exercisePostResult = await postAPI('/exercises', token, {UserId: id, name});
+        const exercise = exercisePostResult.data.data;
 
         let createdVars = new Array();
         if(variables !== undefined){
-            exerciseResult.data.data.variables = new Array();
+            exercisePostResult.data.data.variables = new Array();
             for(let i = 0; i < variables.length; i++){
                 createdVars[i] = await postAPI('/variables', token, {
                     ExerciseId: exercise.id, 
@@ -30,11 +30,11 @@ router.post('/me', isLoggedIn, async (req, res, next) => {
                     await deleteAPI(`/exercises/${exercise.id}`, token, {force:true});
                     return res.status(err.response.status).json(err.response.data);
                 })
-                exerciseResult.data.data.variables[i] = createdVars[i].data.data;
+                exercisePostResult.data.data.variables[i] = createdVars[i].data.data;
             }
         }
 
-        return res.status(201).json(exerciseResult.data);
+        return res.status(201).json(exercisePostResult.data);
 
     } catch (err) {
         if(err.response){
@@ -48,19 +48,14 @@ router.post('/me', isLoggedIn, async (req, res, next) => {
 router.get('/me', isLoggedIn, async (req, res, next) => {
     try {
         const { token, id } = req.user;
-        const exerciseResult = await axios({
-            method: 'GET',
-            url: `${API_URL}/exercises`,
-            headers: { 'bodycheck-access-token': token },
-            params: { UserId: id }
-        });
+        const {paranoid, withVariables, withRecords} = req.query;
+        const exerciseGetResult = await getAPI('/exercises', token, {UserId: id, paranoid, withVariables, withRecords});
 
-        return res.status(exerciseResult.status).json(exerciseResult.data);
+        return res.status(exerciseGetResult.status).json(exerciseGetResult.data);
 
     } catch (err) {
-        const status = err.response.status;
-        if (status === 404 || status === 400) {
-            return res.status(status).json(err.response.data);
+        if(err.response){
+            return res.status(err.response.status).json(err.response.data);
         }
         console.error(err);
         next(err);
@@ -79,37 +74,20 @@ router.patch('/:id/me', isLoggedIn, async (req, res, next) => {
             return res.status(400).json(getFailure('Name is required'))
         }
         
-        const getResult = await axios({
-            method: 'GET',
-            url: `${API_URL}/exercises/${id}`,
-            headers: { 'bodycheck-access-token': token },
-        }).catch((err) => {
-            const status = err.response.status;
-            if(status === 400 || status === 404){
-                return res.status(status).json(err.response.data);
-            }
-        });
+        const exerciseGetResult = await getAPI(`/exercises${id}`, token);
 
-        if(UserId != getResult.data.data.UserId){
-            console.log(UserId, getResult.data.data.UserId);
+        if(UserId != exerciseGetResult.data.data.UserId){
             return res.status(400).json(getFailure('u can update only ur exercise'));
         }
 
-        const exerciseResult = await axios({
-            method: 'PATCH',
-            url: `${API_URL}/exercises/${id}`,
-            headers: { 'bodycheck-access-token': token },
-            data: { name },
-        }).catch((err) => {
-            const status = err.response.status;
-            if(status === 400 || status === 404){
-                return res.status(status).json(err.response.data);
-            }
-        });
+        const exercisePatchResult = await patchAPI(`/exercises${id}`, token, {name});
 
 
-        return res.status(exerciseResult.status).json(exerciseResult.data);
+        return res.status(exercisePatchResult.status).json(exercisePatchResult.data);
     } catch (err) {
+        if(err.response){
+            return res.status(err.response.status).json(err.response.data);
+        }
         console.error(err);
         next(err);
     }
@@ -117,33 +95,44 @@ router.patch('/:id/me', isLoggedIn, async (req, res, next) => {
 
 router.delete('/:id/me', isLoggedIn, async (req, res, next) => {
     try {
-        // Exercise를 delete하더라도 Record는 유지한다.
-        // 유지되는 Record의 type을 해석하기 위해 Variable 또한 유지한다.
-        // 로그인 유저의 운동만 삭제 가능.
+        // 삭제할 운동의 기록이 있으면 일반삭제
+        // 그렇지 않으면 완전삭제
 
         const { id } = req.params;
-        const { force } = req.query;
         const { token } = req.user;
         const UserId = req.user.id;
 
-        const getResult = await getAPI(`/exercises/${id}`, token, {paranoid: !force}).catch((err) => {
-            return res.status(err.response.status).json(err.response.data);
-        })
-
-        if(UserId != getResult.data.data.UserId){
-            return res.status(400).json(getFailure('u can delete only ur exercise'));
+        // id 검사
+        const exerciseGetResult = await getAPI(`/exercises/${id}`, token);
+        // /me 검사
+        if(UserId != exerciseGetResult.data.data.UserId){
+            return res.status(400).json(getFailure(req.originalUrl + 'u can delete only ur exercise'));
         }
 
-        const exerciseResult = await deleteAPI(`/exercises/${id}`, token, {force}).catch((err) => {
-            const status = err.response.status;
-            if(status){
-                return res.status(status).json(err.response.data);
+        // record 검사
+        let exist = false;
+        const variableGetResult = await getAPI('/variables', token, {ExerciseId: id});
+        if(variableGetResult.status != 204){
+            const variables = variableGetResult.data.data;
+            for(let i = 0; i < variables.length; i++){
+                const recordGetResult = await getAPI('/records', token, {VariableId: variables[i].id});
+                if(recordGetResult.status != 204){
+                    exist = true;
+                    break;
+                }
             }
-        });
+            for(let i = 0; i < variables.length; i++){
+                await deleteAPI(`/variables/${variables[i].id}`, token, {force: !exist});
+            }
+        }
+
+        await deleteAPI(`/exercises/${id}`, token, {force: !exist});
 
         return res.status(204).json();
     } catch (err) {
-        
+        if(err.response){
+            return res.status(err.response.status).json(err.response.data);
+        }
         console.error(err);
         next(err);
     }
