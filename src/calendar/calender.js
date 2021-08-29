@@ -8,9 +8,13 @@ import { Link } from "react-router-dom";
 import CreateExerLabel from "exercise/CreateExerLabel";
 import Exer from "exercise/ExerList";
 
-let date = '';
-const setDate = (data) => {
+let date = new Date();
+date = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`;
+const handleDate = (data) => {
     date = data;
+}
+const getDate = () => {
+  return date;
 }
 function App() {
   return (
@@ -33,10 +37,10 @@ function App() {
             <div className="calendar">
               
              {<Exer/>}
-              <MyApp />
+              <MyApp onChange={handleDate}/>
             </div>
             <div className="diet-table">
-              <Container date={date}/>
+              <Container getDate={getDate}/>
             </div>
           </div>
 
