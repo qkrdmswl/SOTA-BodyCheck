@@ -2,6 +2,7 @@ const express = require('express');
 const axios = require('axios');
 const {API_URL} = require('../config/const');
 const { isLoggedIn, getValidationError, getNoSuchResource, getSuccess, getFailure, verifyEmail, verifyPassword} = require('./middleware');
+const { request, getAPI, postAPI, patchAPI, deleteAPI} = require('./request');
 
 const router = express.Router();
 axios.defaults.headers.origin = 'http://localhost:5001';
@@ -27,10 +28,14 @@ router.post('/join', async (req, res, next) => {
         if(!userResult.data.success){
             return res.json(getFailure('email already exists'));
         }
+
         return res.status(201).json(getSuccess(userResult.data.data));
-    } catch (error) {
-        console.error(error);
-        return next(error);
+    } catch (err) {
+        if(err.response){
+            return res.status(err.response.status).json(err.response.data);
+        }
+        console.error(err);
+        next(err);
     }
 });
 

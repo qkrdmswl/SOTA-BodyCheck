@@ -37,14 +37,25 @@ router.post('/me', isLoggedIn, async (req, res, next) => {
         
 router.patch('/:id', isLoggedIn, async (req, res, next) => {
     try {
+        // 기본의 변수가 레코드를 가지지 않으면 그냥 수정
         // 변수 수정 시 실제로는 기존 변수 삭제 후 새로운 변수를 연결.
+
         const {id} = req.params;
         const {token} = req.user;
+
+        const variableGetResult = await getAPI(`/variables/${id}`, token);
+        
+
+        const variableDeleteResult = await deleteAPI(`/variables/${id}`, token);
 
         const deleteResult = await axios({
             method: 'DELETE',
             url: `${API_URL}/variables/${id}`
         })
+
+        
+
+        return res.status().json()
         
     } catch (err) {
         console.error(err);
