@@ -7,22 +7,38 @@ const router = express.Router();
 
 router.post('/me', isLoggedIn, async (req, res, next) => {
     try {
+        // body: {name, variables}
         const { token, id } = req.user;
-        const { name } = req.body;
-        // body: {name}
+        const { name, variables } = req.body;
 
-        const exerciseResult = await axios({
-            method: 'POST',
-            url: `${API_URL}/exercises`,
-            headers: { 'bodycheck-access-token': token },
-            data: { UserId: id, name },
-        });
+        const exerciseResult = await postAPI('/exercises', token, {UserId: id, name});
+        const exercise = exerciseResult.data.data;
+
+        let createdVars = new Array();
+        if(variables !== undefined){
+            exerciseResult.data.data.variables = new Array();
+            for(let i = 0; i < variables.length; i++){
+                createdVars[i] = await postAPI('/variables', token, {
+                    ExerciseId: exercise.id, 
+                    name: variables[i].name,
+                    VariableTypeId: variables[i].type,
+                })
+                .catch(async(err) => {
+                    for(let j = 0; j < i; j++){
+                        await deleteAPI(`/variables/${createdVars[j].data.data.id}`, token, {force: true})
+                    }
+                    await deleteAPI(`/exercises/${exercise.id}`, token, {force:true});
+                    return res.status(err.response.status).json(err.response.data);
+                })
+                exerciseResult.data.data.variables[i] = createdVars[i].data.data;
+            }
+        }
+
         return res.status(201).json(exerciseResult.data);
 
     } catch (err) {
-        const status = err.response.status;
-        if (status === 404 || status === 400) {
-            return res.status(status).json(err.response.data);
+        if(err.response){
+            return res.status(err.response.status).json(err.response.data);
         }
         console.error(err);
         next(err);
