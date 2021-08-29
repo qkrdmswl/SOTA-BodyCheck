@@ -1,14 +1,12 @@
 import "./App.css";
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
-import Container from "../contents/dietTable";
-import MyApp from "../contents/calendar";
-import Preview from "../contents/preview";
-
-
-// import React from 'react';
-// import logo from './logo.svg';
-// import './App.css';
+import Container from "./dietTable";
+import MyApp from "./calendarR";
+import Preview from "./preview";
+import { Link } from "react-router-dom";
+import CreateExerLabel from "exercise/CreateExerLabel";
+import Exer from "exercise/ExerList";
 
 function App() {
   return (
@@ -16,7 +14,9 @@ function App() {
       <body>
         <header className="App-header">
           <div className="logo">
+            <Link to ="/main">
             <button className="title">Body Check</button>
+            </Link>
           </div>
           <div className="icon">
             <i className="icon-signal"></i>
@@ -27,6 +27,8 @@ function App() {
         <section>
           <div className="left">
             <div className="calendar">
+              
+             {<Exer/>}
               <MyApp />
             </div>
             <div className="diet-table">

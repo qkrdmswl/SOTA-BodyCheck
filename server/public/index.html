@@ -1,13 +1,42 @@
 <html>
+  <head>
+    <title>Express</title>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+      window.onload = async () => {
+        const tokenResult = await axios({
+          method: "POST",
+          url: "auth/login",
+          data: {
+            email: "new@new.com",
+            password: "asdf1234",
+          },
+        });
+        console.log(tokenResult.data);
 
-<head>
-  <title>Express</title>
-  <link rel="stylesheet" href="/stylesheets/style.css">
-</head>
+        const name = document.getElementById("exercise-name").value;
+        const variableNames = document.getElementsByClassName("variable-name");
+        const variableTypes = document.getElementsByClassName("variable-type");
+        let variables = new Array();
+        for (let i = 0; i < variableNames.length; i++) {
+          variables[i] = {};
+          variables[i].name = variableNames[i].value;
+          variables[i].type = variableTypes[i].value;
+        }
+        await axios({
+          method: "POST",
+          url: "exercise/me",
+          data: {
+            name,
+            variables,
+          },
+        });
+      };
+    </script>
+  </head>
 
-<body>
-  <h1>Express</h1>
-  <p>Welcome to Express</p>
-</body>
-
+  <body>
+    <h1>Express</h1>
+    <p>Welcome to Express</p>
+  </body>
 </html>

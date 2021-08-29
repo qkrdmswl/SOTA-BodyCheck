@@ -3,8 +3,8 @@ import { Navbar, Nav, Button, Container } from "react-bootstrap";
 import SignInModal from "../SignModels/SignInModal";
 import SignUpModal from "../SignModels/SignUpModal";
 import { Link } from "react-router-dom";
-
 import { Route } from "react-router";
+
 const Header = () => {
   const [signUpModalOn, setSignUpModalOn] = useState(false);
   const [signInModalOn, setSignInModalOn] = useState(false);
@@ -44,17 +44,11 @@ const Header = () => {
                     Sign Up
                   </Button>
                 </Nav.Link>
-
-
-
-
               </Nav>
             </Navbar.Collapse>
           </Container>
         </Navbar>
-        <Link to='/main/exerLabel'>운동정의</Link>
-        <Link to ='/main/calender'>캘린더</Link>
-        <Link to ='/main/exerLabelPage'>운동라벨</Link>
+
       </header>
     </>
   );
