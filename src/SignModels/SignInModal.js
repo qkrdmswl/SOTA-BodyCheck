@@ -2,23 +2,8 @@ import React, { useState } from "react";
 import { Modal, Button, Form, Container } from "react-bootstrap";
 import { GoogleLogin } from "react-google-login";
 import HorizontalLine from "../components/HorizonLine";
-<<<<<<< HEAD
-import axios from "axios";
-
-let email = '';
-let password = '';
-const onClickLogin = (e) => {
-  axios.post('/auth/login', {email, password}).then((res) => {
-    // 쿠키 받기(로그인) 성공
-    // 로그인 창 닫고 화면 갱신하는 코드
-  }).catch((error) => {
-    console.error(error);
-  })
-}
-=======
 import FindId from "./FindId";
 import FindPw from "./FindPw";
->>>>>>> e55ff23dd1e717cdafbd27c69bce49e9dd2ff68c
 
 const SignInModal = ({ show, onHide }) => {
   const [findIdModalOn, setFindIdModalOn] = useState(false);
@@ -51,15 +36,15 @@ const SignInModal = ({ show, onHide }) => {
           <Form>
             <Form.Group>
               <Form.Label>Email address</Form.Label>
-              <Form.Control type="email" placeholder="Enter email" onChange={e => email=e.target.value}/>
+              <Form.Control type="email" placeholder="Enter email" />
             </Form.Group>
 
             <Form.Group>
               <Form.Label>Password</Form.Label>
-              <Form.Control type="password" placeholder="Password" onChange={e => password=e.target.value}/>
+              <Form.Control type="password" placeholder="Password" />
             </Form.Group>
 
-            <Button block variant="info" type="button" className="my-3" onClick={onClickLogin} >
+            <Button block variant="info" type="button" className="my-3" >
               Sign In
             </Button>
 
