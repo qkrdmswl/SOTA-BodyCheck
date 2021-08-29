@@ -1,13 +1,12 @@
 import React from 'react';
 import Header from './Layouts/Header';
-import ExerLabel from "./ exercise/exerLabel";
-//import InputSample from './exerLabel';
 import Calender from "./calendar/calender";
-import exerLabelPage from './ exercise/exerLabelPage';
-import InputSample from "./ exercise/exerLabel";
+import Exer from 'exercise/ExerList';
+
 function MainPage() {
   return <div className='main'>
   <Header/>
+  {/*<Exer />*/}
   <Calender />
   </div>;
 }

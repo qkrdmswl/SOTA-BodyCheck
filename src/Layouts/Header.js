@@ -3,8 +3,8 @@ import { Navbar, Nav, Button, Container } from "react-bootstrap";
 import SignInModal from "../SignModels/SignInModal";
 import SignUpModal from "../SignModels/SignUpModal";
 import { Link } from "react-router-dom";
-
 import { Route } from "react-router";
+
 const Header = () => {
   const [signUpModalOn, setSignUpModalOn] = useState(false);
   const [signInModalOn, setSignInModalOn] = useState(false);

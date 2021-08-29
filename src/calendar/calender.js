@@ -5,11 +5,8 @@ import Container from "./dietTable";
 import MyApp from "./calendarR";
 import Preview from "./preview";
 import { Link } from "react-router-dom";
-
-
-// import React from 'react';
-// import logo from './logo.svg';
-// import './App.css';
+import CreateExerLabel from "exercise/CreateExerLabel";
+import Exer from "exercise/ExerList";
 
 function App() {
   return (
@@ -17,7 +14,9 @@ function App() {
       <body>
         <header className="App-header">
           <div className="logo">
+            <Link to ="/main">
             <button className="title">Body Check</button>
+            </Link>
           </div>
           <div className="icon">
             <i className="icon-signal"></i>
@@ -28,7 +27,8 @@ function App() {
         <section>
           <div className="left">
             <div className="calendar">
-            <Link to='/main/exerLabel'>운동정의</Link>
+              
+             {<Exer/>}
               <MyApp />
             </div>
             <div className="diet-table">
