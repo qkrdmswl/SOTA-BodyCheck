@@ -12,7 +12,7 @@ var datasByRow = [
 class Inputs extends React.Component {
 constructor(props) {
     super(props);
-    this.state = { 식사:'', 메뉴:'', 칼로리:'' , 날짜: props.date};
+    this.state = { 식사:'', 메뉴:'', 칼로리:''};
     this.handleClear = this.handleClear.bind(this);
   }
 
@@ -23,7 +23,7 @@ constructor(props) {
   }
 
   handleClear() {
-    this.setState({ 식사:'', 메뉴:'', 칼로리:'', 날짜:'' });
+    this.setState({ 식사:'', 메뉴:'', 칼로리:''});
   }
 
   render(){
@@ -31,7 +31,7 @@ constructor(props) {
       <Input name='식사' change={this.handleChange.bind(this, '식사')} value={this.state.식사} placeholder='식사' />
       <Input name='메뉴' change={this.handleChange.bind(this, '메뉴')} value={this.state.메뉴} placeholder='메뉴' />
       <Input name='칼로리' change={this.handleChange.bind(this, '칼로리')} value={this.state.칼로리} placeholder='칼로리' />
-      <div className='col-md-3'><AddButton newData={this.state} create={this.props.onCreate} clear={this.handleClear} /></div>
+      <div className='col-md-3'><AddButton newData={this.state} create={this.props.onCreate} clear={this.handleClear} getDate={this.props.getDate}/></div>
     </div>
   }
 
@@ -81,17 +81,8 @@ onClick(){
     this.props.clear.call(null);
   }
   const data = this.props.newData;
-  console.log(data.날짜, data.식사);
-  // axios.post('/diet', {
-  //   name: data.메뉴,
-  //   meal: data.식사,
-  //   memo: data.칼로리,
-    
-  // }).then((res) => {
-  //   console.log(res);
-  // }).catch((err) => {
-  //   console.log(err.response.data);
-  // });
+  const date = this.props.getDate();
+  console.log(date, data);
 
 }
 
@@ -154,7 +145,7 @@ class Container extends React.Component {
 
   render(){
     return <div>
-      <Inputs onCreate={this.onCreate} date={this.props.date}/>
+      <Inputs onCreate={this.onCreate} getDate={this.props.getDate}/>
       <Table datas={this.state.datas} onDelete={this.onDelete} />
   </div>
   }
