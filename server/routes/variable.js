@@ -59,13 +59,13 @@ router.get('/me', isLoggedIn, async (req, res, next) => {
 router.patch('/:id/me', isLoggedIn, async (req, res, next) => {
     try {
         // 기본의 변수가 레코드를 가지지 않으면 그냥 수정
-        // 변수 수정 시 실제로는 기존 변수 삭제 후 새로운 변수를 연결.
+        // 아니면 exercse, variable 삭제 후 새로 생성
         // body options: name, type
 
         const {id} = req.params;
         const {token} = req.user;
         const UserId = req.user.id;
-        const {name, type} = req.body;
+        const {name} = req.body;
         let force = false;
 
         if(!name && !type){
@@ -76,38 +76,14 @@ router.patch('/:id/me', isLoggedIn, async (req, res, next) => {
         const variableGetResult = await getAPI(`/variables/${id}`, token);
         
         // /me 검사
-        const exerciseGetResult = await getAPI('/exercises', token, {UserId});
-        const exercises = exerciseGetResult.data.data;
-        let exist = false;
-        for(let i = 0; i < exercises.length; i++){
-            if(exercises[i].id == variableGetResult.data.data.ExerciseId){
-                exist = true;
-                break;
-            }
-        }
-        if(!exist){
-            return res.status(404).json(getFailure(req.originalUrl + ' not ur variable'));
+        const exerciseGetResult = await getAPI(`/exercises/${variableGetResult.data.data.ExerciseId}`, token);
+        if(UserId != exerciseGetResult.data.data.UserId){
+            return res.status(400).json(getFailure(req.originalUrl + ' not ur variable'));
         }
 
-        // record 검사. 하나라도 있으면 삭제 후 재생성, 하나도 없으면 수정.
-        const recordGetResult = await getAPI(`/records`, token, {
-            VariableId: variableGetResult.data.data.id,
-        });
+        const variablePatchResult = await patchAPI(`/variables/${id}`, token, {name});
+        return res.status(variablePatchResult.status).json(variablePatchResult.data);
 
-        let result;
-        if(recordGetResult.status === 204){
-            result = await patchAPI(`/variables/${id}`, token, {name, VariableTypeId: type});
-        } else {
-            await deleteAPI(`/variables/${id}`, token, {force});
-            const newData = {
-                name: name ? name : variableGetResult.data.data.name,
-                ExerciseId: variableGetResult.data.data.ExerciseId,
-                VariableTypeId: type ? type : variableGetResult.data.data.VariableTypeId,
-            }
-            result = await postAPI('/variables', token, newData);
-
-        }
-        return res.status(result.status).json(result.data);
         
     } catch (err) {
         if(err.response){
