@@ -11,6 +11,7 @@ class Preview extends React.Component {
   renderPreviews = () => {
     const { selectedFiles } = this.state;
     const previewContainer = document.getElementById("preview-container");
+    if (selectedFiles !=null &&selectedFiles.length <1){
     for (let i = 0; i < selectedFiles.length; i++) {
       const preview = document.createElement("img");
       preview.id = `preview_${i}`;
@@ -20,7 +21,7 @@ class Preview extends React.Component {
         preview.src = reader.result;
       };
       reader.readAsDataURL(selectedFiles[i]);
-    }
+    }}
   };
   fileChangedHandler = event => {
     const files = event.target.files;
