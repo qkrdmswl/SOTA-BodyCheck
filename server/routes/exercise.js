@@ -62,6 +62,63 @@ router.get('/me', isLoggedIn, async (req, res, next) => {
     }
 })
 
+router.put('/:id/me', isLoggedIn, async (req, res, next) => {
+    try {
+        const {name, variables} = req.body;
+        const { token} = req.user;
+        const UserId = req.user.id;
+        const {id} = req.params;
+        
+        const exerciseGetResult = await getAPI(`/exercises/${id}`, token, {withVariables: true});
+        if(UserId != exerciseGetResult.data.data.UserId){
+            return res.status(400).json(getFailure(req.originalUrl + ' not ur exercise'));
+        }
+
+        // delete
+        const exercise = exerciseGetResult.data.data;
+        console.log(exercise);
+        const variablesGetResult = await getAPI(`/variables`, token, {ExerciseId: exercise.id});
+        const exVariables = variablesGetResult.data.data;
+        for(let i = 0; i < exVariables.length; i++){
+            await deleteAPI(`/variables/${exVariables[i].id}`, token);
+        }
+        await deleteAPI(`/exercises/${exercise.id}`, token);
+
+        // post
+        const exercisePostResult = await postAPI('/exercises', token, {UserId, name});
+        const newExercise = exercisePostResult.data.data;
+        let createdVars = new Array();
+        if(variables !== undefined){
+            exercisePostResult.data.data.variables = new Array();
+            for(let i = 0; i < variables.length; i++){
+                createdVars[i] = await postAPI('/variables', token, {
+                    ExerciseId: newExercise.id, 
+                    name: variables[i].name,
+                    VariableTypeId: variables[i].type,
+                })
+                .catch(async(err) => {
+                    for(let j = 0; j < i; j++){
+                        await deleteAPI(`/variables/${createdVars[j].data.data.id}`, token, {force: true})
+                    }
+                    await deleteAPI(`/exercises/${newExercise.id}`, token, {force:true});
+                    return res.status(err.response.status).json(err.response.data);
+                })
+                exercisePostResult.data.data.variables[i] = createdVars[i].data.data;
+            }
+        }
+
+        return res.status(201).json(exercisePostResult.data);
+        
+
+    } catch (err) {
+        if(err.response){
+            return res.status(err.response.status).json(err.response.data);
+        }
+        console.error(err);
+        next(err);
+    }
+})
+
 // 로그인 유저 본인의 운동 수정, 해당 id의 운동이 로그인 유저의 것이 아닐 경우 에러
 router.patch('/:id/me', isLoggedIn, async (req, res, next) => {
     try {
