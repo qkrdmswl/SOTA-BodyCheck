@@ -35,7 +35,7 @@ router.post('/me', isLoggedIn, async (req, res, next) => {
     }
 })
 
-router.get('/me', isLoggedIn, async (req, res, next) => {
+router.get('/me', isLoggedIn, async (req, res, next) => { 
     try {
         const { token, id } = req.user;
         const dietGetResult = await getAPI('/diets', token, {UserId:id})

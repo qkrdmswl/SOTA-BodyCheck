@@ -8,6 +8,10 @@ import { Link } from "react-router-dom";
 import CreateExerLabel from "exercise/CreateExerLabel";
 import Exer from "exercise/ExerList";
 
+let date = '';
+const setDate = (data) => {
+    date = data;
+}
 function App() {
   return (
     <div className="App">
@@ -32,7 +36,7 @@ function App() {
               <MyApp />
             </div>
             <div className="diet-table">
-              <Container />
+              <Container date={date}/>
             </div>
           </div>
 

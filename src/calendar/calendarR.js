@@ -2,15 +2,30 @@ import React, { useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import "./calendar.css";
+import Container from "./dietTable";
 
-function MyApp() {
-  const [value, onChange] = useState(new Date());
+class Calender extends React.Component {
+  state = {
+    date: new Date(),
+  };
 
-  return (
-    <div>
-      <Calendar onChange={onChange} value={value} />
-    </div>
-  );
+  onChange = (date) => this.setState({ date });
+
+  callDay = (clickedDay) => {
+    this.props.setDate(clickedDay);
+  }; //moment(day.dateString).format(_format)
+
+  render() {
+    return (
+      <div>
+        <Calendar
+          onChange={this.onChange}
+          value={this.state.date}
+          onClickDay={this.callDay}
+        />
+      </div>
+    );
+  }
 }
 
-export default MyApp;
+export default Calender;

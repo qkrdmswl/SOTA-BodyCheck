@@ -2,6 +2,7 @@ import './dietTable.css';
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import { Navbar, Nav, NavDropdown, Button, Jumbotron } from 'react-bootstrap';
+import axios from 'axios';
 
 
 var datasByRow = [
@@ -11,7 +12,7 @@ var datasByRow = [
 class Inputs extends React.Component {
 constructor(props) {
     super(props);
-    this.state = { 식사:'', 메뉴:'', 칼로리:'' };
+    this.state = { 식사:'', 메뉴:'', 칼로리:'' , 날짜: props.date};
     this.handleClear = this.handleClear.bind(this);
   }
 
@@ -22,7 +23,7 @@ constructor(props) {
   }
 
   handleClear() {
-    this.setState({ 식사:'', 메뉴:'', 칼로리:'' });
+    this.setState({ 식사:'', 메뉴:'', 칼로리:'', 날짜:'' });
   }
 
   render(){
@@ -33,6 +34,8 @@ constructor(props) {
       <div className='col-md-3'><AddButton newData={this.state} create={this.props.onCreate} clear={this.handleClear} /></div>
     </div>
   }
+
+
 }
 
 
@@ -77,6 +80,19 @@ onClick(){
     this.props.create.call(null, this.props.newData.식사, this.props.newData.메뉴, this.props.newData.칼로리);
     this.props.clear.call(null);
   }
+  const data = this.props.newData;
+  console.log(data.날짜, data.식사);
+  // axios.post('/diet', {
+  //   name: data.메뉴,
+  //   meal: data.식사,
+  //   memo: data.칼로리,
+    
+  // }).then((res) => {
+  //   console.log(res);
+  // }).catch((err) => {
+  //   console.log(err.response.data);
+  // });
+
 }
 
   render(){
@@ -121,7 +137,7 @@ class Table extends React.Component {
 class Container extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { datas: datasByRow, counter: datasByRow.lenght };
+    this.state = { datas: datasByRow, counter: datasByRow.lenght};
     this.onDelete = this.onDelete.bind(this);
     this.onCreate = this.onCreate.bind(this);
   }
@@ -138,7 +154,7 @@ class Container extends React.Component {
 
   render(){
     return <div>
-      <Inputs onCreate={this.onCreate}/>
+      <Inputs onCreate={this.onCreate} date={this.props.date}/>
       <Table datas={this.state.datas} onDelete={this.onDelete} />
   </div>
   }
