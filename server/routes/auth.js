@@ -24,6 +24,15 @@ router.post('/join', async (req, res, next) => {
     }
 });
 
+router.get('/test', async (req, res, next) => {
+    try {
+        return res.status(201).json({asdf: 'asdf'});
+    } catch (error) {
+        console.error(error);
+        return next(error);
+    }
+});
+
 router.post('/login',
     async (req, res, next) => {
         const { email, password } = req.body;
