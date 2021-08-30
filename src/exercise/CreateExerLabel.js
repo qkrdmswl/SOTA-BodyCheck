@@ -38,15 +38,30 @@ import axios from 'axios';
           this.setState(nextState)
       }
   
-      async handleClick() { //axios
+      async handleClick() {
           const exer = {   // 한번 만들어지면 수정할 일이 없으므로  const로 선언
               name: this.state.name,
               weight: this.state.weight,
               count: this.state.count,
               sets: this.state.sets
           };
-  
           this.props.onCreate(exer);
+          const variables = [
+            {name: this.state.weight, type:1},
+            {name: this.state.count, type:1},
+            {name: this.state.sets, type:1}
+          ]
+          console.log(variables);
+        const postResult = await axios.post('/exercise/me', {
+            name: this.state.name,
+            variables: [
+                {name: '무게', type:1},
+                {name: '횟수', type:1},
+                {name: '셋트', type:1},
+              ]
+        })
+        console.log(postResult.data.data);
+
 
           this.setState({
               name: '',
@@ -54,15 +69,7 @@ import axios from 'axios';
               count:'',
               sets:''
           });
-          const variables = [
-              {name: this.state.weight, type:1},
-              {name: this.state.count, type:1},
-              {name: this.state.sets, type:1}
-            ]
-          await axios.post('https://localhost:5001/exercise/me', {
-              name: this.state.name,
-              variables
-          })
+
       }
 
       handlePageCreate() {
