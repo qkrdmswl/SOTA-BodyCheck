@@ -3,6 +3,7 @@ import ExerDetails from './ExerInfo';
 import CreateExerLabel from './CreateExerLabel';
 import ExerInfo from './ContactInfo';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 class Exer extends Component {
   constructor(props) {
       super(props);
@@ -95,6 +96,41 @@ class Exer extends Component {
               />);
           })
       }
+//여기도 음..
+/*
+const name = this.state.name;
+const weight = this.state.weight;
+const count = this.state.count;
+const sets = this.state.sets;
+const headers={
+    'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
+    'Accept': '*//**'
+}
+axios.get('/me').then((Response)=>{
+    console.log(Response.data);
+}).catch((Error)=>{
+    console.log(Error);
+})*/
+//exercise/me
+const name = this.state.name;
+const weight = this.state.weight;
+const count = this.state.count;
+const sets = this.state.sets;
+  
+  let data = {
+    
+        name,
+        weight,
+        count,
+        sets,
+      
+  }
+axios.post('exercise/me', {"body":data}, {
+    headers: {
+    'Content-Type': 'application/json'
+    }
+  }
+)
       return (
           <div id="전체">
           {/*}   <Link to ="/main">
@@ -107,15 +143,15 @@ class Exer extends Component {
                   placeholder="Search"
                   value={this.state.keyword}
                   onChange={this.handleChange}
-                  style={{"margin-top":"20px"}}/>
+                  style={{"marginTop":"20px"}}/>
               <div id="exerList" style={{"margin":"10px"}}>{mapToComponents(this.state.exerData)}</div>
-             
+               
             {/* <Link to ="/as@a.com/exercise/new">
             <button id ="create" onClick={this.handlePageCreate}> + </button>
             </Link> */}
              
               <ExerDetails
-                  isSelected={this.state.selectedKey != -1}
+                  isSelected={this.state.selectedKey !== -1}
                   exer={this.state.exerData[this.state.selectedKey]}
                   onRemove={this.handleRemove}
                   onEdit={this.handleEdit}    // onEdit 이벤트를 handleEdit 함수로 연결
