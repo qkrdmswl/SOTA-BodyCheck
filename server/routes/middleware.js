@@ -42,14 +42,25 @@ middlewares.updateForEach = async (record, fields) => {
 }
 
 middlewares.verifyEmail = (email) => {
-  var regExp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i
+  const regExp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i
   return regExp.test(email);
 }
 
 middlewares.verifyPassword = (password) => {
   //  8 ~ 10자 영문, 숫자 조합
-  var regExp = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z]{8,10}$/
-  return regExp.test(password)
+  const regExp = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z]{8,10}$/
+  return regExp.test(password);
+}
+
+middlewares.verifyDate = (date) => {
+  const regExp = /^(19|20)\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[0-1])$/;
+  return regExp.test(date);
+}
+
+middlewares.verifyTime = (time) => {
+  const reg1 = /^(0[0-9]|1[0-9]|2[0-4]):([0-5][0-9]):([0-5][0-9])$/;
+  const reg2 = /^(0[0-9]|1[0-9]|2[0-4]):([0-5][0-9])$/;
+  return reg1.test(time) ? true : ( reg2.test(time) ? true : false );
 }
 
 middlewares.getTrueFalse = (str) => {
