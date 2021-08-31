@@ -17,6 +17,7 @@ router.post('/me', isLoggedIn, async (req, res, next) => {
             return res.status(400).json(getFailure(req.originalUrl + ' name is required and not null'));
         }
 
+        const dateRecordGetResult = await getAPI(`/dateRecords/${DateRecordId}`, token)
         // DateRecordId가 user의 DateRecord의 id인지 검사
         if(id != dateRecordGetResult.data.data.UserId){
             return res.status(400).json(getFailure(req.originalUrl + ' u can create only ur diet'))
@@ -53,11 +54,14 @@ router.get('/me', isLoggedIn, async (req, res, next) => {
 
 router.get('/:date/me', isLoggedIn, async (req, res, next) => {
     try{
-        const { token, id } = req.user;
+        const { token} = req.user;
         const UserId = req.user.id;
-        const date = req.params;
-        const dateRecordGetResult = await getAPI('/dateRecords', token, {date});
+        const {date} = req.params;
+        const dateRecordGetResult = await getAPI('/dateRecords', token, {date, UserId});
+        if(dateRecordGetResult.status===204){
+            return res.status(dateRecordGetResult.status).json(dateRecordGetResult.data);
 
+        }
         const dietGetResult = await getAPI('/diets', token, {DateRecordId: dateRecordGetResult.data.data.id});
         
         return res.status(dietGetResult.status).json(dietGetResult.data);
@@ -85,20 +89,10 @@ router.patch('/:id/me', isLoggedIn, async (req, res, next) => {
             return res.status(400).json(getFailure('Name is required'))
         }
         
-        const dietGetResult = await axios({
-            method: 'GET',
-            url: `${API_URL}/diets/${id}`,
-            headers: { 'bodycheck-access-token': token },
-        }).catch((err) => {
-            const status = err.response.status;
-            if(status === 400 || status === 404){
-                return res.status(status).json(err.response.data);
-            }
-        });
-
-        if(UserId != dietGetResult.data.data.UserId){
-            console.log(UserId, dietGetResult.data.data.UserId);
-            return res.status(400).json(getFailure('u can update only ur exercise'));
+        const dietGetResult = await getAPI(`/diets/${id}`, token);
+        const dateRecordGetResult = await getAPI(`/dateRecords/${dietGetResult.data.data.DateRecordId}`, token);
+        if(UserId != dateRecordGetResult.data.data.UserId){
+            return res.status(400).json(getFailure('u can update only ur diet'));
         }
 
         const dietPatchResult = await axios({
@@ -116,6 +110,9 @@ router.patch('/:id/me', isLoggedIn, async (req, res, next) => {
 
         return res.status(dietPatchResult.status).json(dietPatchResult.data);
     } catch (err) {
+        if(err.response){
+            return res.status(err.response.status).json(err.response.data);
+        }
         console.error(err);
         next(err);
     }
@@ -129,23 +126,13 @@ router.delete('/:id/me', isLoggedIn, async (req, res, next) => {
 
         const { id } = req.params;
         const { token } = req.user;
-        const UserId = req.user;
+        const UserId = req.user.id;
 
         // 내 DateRecord 가져와서 하위 Diet들의 id 중 id가 없으면 에러
-        const dateRecordGetResult = await getAPI(`/dateRecords`, token, {UserId});
-
-        const dietGetResult = await getAPI(`/diets`, token, {dateRecordGetResult});
-
-        const diets = dietGetResult.data.data;
-        let exist = false;
-        for(let i = 0; i < diets.length; i++){
-            if(diets[i].id == id){
-                exist = true;
-                break;
-            }
-        }
-        if(!exist){
-            return res.status(400).json(getFailure(req.originalUrl + ' u can only...'));
+        const dietGetResult = await getAPI(`/diets/${id}`, token);
+        const dateRecordGetResult = await getAPI(`/dateRecords/${dietGetResult.data.data.DateRecordId}`, token);
+        if(UserId != dateRecordGetResult.data.data.UserId){
+            return res.status(400).json(getFailure('u can update only ur diet'));
         }
 
         await deleteAPI(`/diets/${id}`, token);

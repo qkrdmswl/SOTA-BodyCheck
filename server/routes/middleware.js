@@ -48,7 +48,7 @@ middlewares.verifyEmail = (email) => {
 
 middlewares.verifyPassword = (password) => {
   //  8 ~ 10자 영문, 숫자 조합
-  const regExp = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z]{8,10}$/
+  const regExp = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z]{8,16}$/
   return regExp.test(password);
 }
 

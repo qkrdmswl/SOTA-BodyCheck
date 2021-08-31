@@ -128,5 +128,62 @@ router.delete('/:id/me', isLoggedIn, async (req, res, next) => {
     }
 })
 
+// file upload & download
 
+router.post('/:id/upload', isLoggedIn, async (req, res, next) => {
+    try {
+        // 프론트는 dateRecord 삭제 전 레코드 삭제해야 함.
+
+        const { id } = req.params;
+        const { token } = req.user;
+        const UserId = req.user.id;
+        const {file, description} = req.body;
+
+        // id 검사
+        const dateRecordGetResult = await getAPI(`/dateRecords/${id}`, token);
+        // /me 검사
+        if(UserId != dateRecordGetResult.data.data.UserId){
+            return res.status(400).json(getFailure(req.originalUrl + ' not ur dateRecord'));
+        }
+
+        const uploadResult = await postAPI(`/dateRecords/${id}/files/upload`, token, {file, description});
+
+
+        return res.status(uploadResult.status).json(uploadResult.data);
+    } catch (err) {
+        if(err.response){
+            return res.status(err.response.status).json(err.response.data);
+        }
+        console.error(err);
+        next(err);
+    }
+})
+
+router.get('/:id/files', isLoggedIn, async (req, res, next) => {
+    try {
+        // 프론트는 dateRecord 삭제 전 레코드 삭제해야 함.
+
+        const { id } = req.params;
+        const { token } = req.user;
+        const UserId = req.user.id;
+
+        // id 검사
+        const dateRecordGetResult = await getAPI(`/dateRecords/${id}/files`, token);
+        // /me 검사
+        if(UserId != dateRecordGetResult.data.data.UserId){
+            return res.status(400).json(getFailure(req.originalUrl + ' not ur dateRecord'));
+        }
+
+        const getResult = await getAPI(`/dateRecords/${id}`, token, {file, description});
+
+
+        return res.status(getResult.status).json(getResult.data);
+    } catch (err) {
+        if(err.response){
+            return res.status(err.response.status).json(err.response.data);
+        }
+        console.error(err);
+        next(err);
+    }
+})
 module.exports = router;
