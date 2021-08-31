@@ -4,6 +4,10 @@ import CreateExerLabel from './CreateExerLabel';
 import ExerInfo from './ContactInfo';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+//
+//const app = express();
+//app.use(session({ secret: 'somevalue' }));
+//
 class Exer extends Component {
   constructor(props) {
       super(props);
@@ -12,6 +16,7 @@ class Exer extends Component {
           keyword: '',
           isCreate:false,
           exerData: [{
+
               name: '달리기',
               weight: '0',
               count:'0',
@@ -51,13 +56,31 @@ class Exer extends Component {
     })
 }
 
-  handleCreate(exer) {
+async handleCreate(exer) {
       var newExer = Array.from(this.state.exerData);
       newExer.push(exer);
       this.setState({
           exerData: newExer
       });
      // this.props.onCreate(exer);
+               //axios
+               const variables = [
+                {name: this.state.weight, type:1},
+                {name: this.state.count, type:1},
+                {name: this.state.sets, type:1}
+              ]
+              console.log(variables);
+            const postResult = await axios.post('/exercise/me', {
+                name: this.state.name,
+                variables: [
+                    {name: '무게', type:1},
+                    {name: '횟수', type:1},
+                    {name: '셋트', type:1},
+                  ]
+            })
+            console.log(postResult.data.data);
+    //
+    
   }
 
   handleRemove() {
@@ -65,7 +88,7 @@ class Exer extends Component {
           return;
       }
       var newExer = Array.from(this.state.exerData);
-      newExer.splice(this.state.selectedKey, 1);
+      newExer.splice(this.state.selectedKey, 1); //splice 배열의 기존 요소를 삭제,교체,추가하여 배열의 내용을 변경
       this.setState({
           exerData: newExer,
           selectedKey: -1
@@ -82,12 +105,12 @@ class Exer extends Component {
   }
 
 
-  render() {
-
-      const mapToComponents = (data) => {
-          data = data.filter((exer) => {
+   render() {
+    
+      const mapToComponents = (data) => { //배열을 컴포넌트로 맵핑
+          {/*data = data.filter((exer) => {
               return exer.name.toLowerCase().indexOf(this.state.keyword.toLowerCase()) > -1;
-          })
+          })*/}
           return data.map((exer, i) => {
               return (<ExerInfo
                   exer={exer}
@@ -95,47 +118,12 @@ class Exer extends Component {
                   onClick={() => this.handleClick(i)}
               />);
           })
+
+//
       }
-//여기도 음..
-/*
-const name = this.state.name;
-const weight = this.state.weight;
-const count = this.state.count;
-const sets = this.state.sets;
-const headers={
-    'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
-    'Accept': '*//**'
-}
-axios.get('/me').then((Response)=>{
-    console.log(Response.data);
-}).catch((Error)=>{
-    console.log(Error);
-})*/
-//exercise/me
-const name = this.state.name;
-const weight = this.state.weight;
-const count = this.state.count;
-const sets = this.state.sets;
-  
-  let data = {
-    
-        name,
-        weight,
-        count,
-        sets,
-      
-  }
-axios.post('exercise/me', {"body":data}, {
-    headers: {
-    'Content-Type': 'application/json'
-    }
-  }
-)
       return (
           <div id="전체">
-          {/*}   <Link to ="/main">
-            <button className="title">Body Check</button>
-      </Link>*/ }
+          
             <hr/>
                {/*운동List*/}
               <input id="검색input"
@@ -144,11 +132,7 @@ axios.post('exercise/me', {"body":data}, {
                   value={this.state.keyword}
                   onChange={this.handleChange}
                   style={{"marginTop":"20px"}}/>
-              <div id="exerList" style={{"margin":"10px"}}>{mapToComponents(this.state.exerData)}</div>
-               
-            {/* <Link to ="/as@a.com/exercise/new">
-            <button id ="create" onClick={this.handlePageCreate}> + </button>
-            </Link> */}
+           { <div id="exerList" style={{"margin":"10px"}}>{mapToComponents(this.state.exerData)}</div>}
              
               <ExerDetails
                   isSelected={this.state.selectedKey !== -1}
@@ -158,7 +142,7 @@ axios.post('exercise/me', {"body":data}, {
               />
             {  <CreateExerLabel //배열에 데이터 삽입부분
                   onCreate={this.handleCreate} 
-             /> }
+            /> }
         </div>
       );
   }

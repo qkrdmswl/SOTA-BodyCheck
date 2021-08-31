@@ -18,19 +18,19 @@ import axios from 'axios';
           };
           this.handleChange = this.handleChange.bind(this);
           this.handleClick = this.handleClick.bind(this);
-          this.handleCreate = this.handleCreate.bind(this);
+         // this.handleCreate = this.handleCreate.bind(this);
           this.handlePageCreate = this.handlePageCreate.bind(this);
       }
 
 
-      handleCreate(exer) {
+      /*handleCreate(exer) {
         var newExer = Array.from(this.state.exerData);
         newExer.push(exer);
         this.setState({
             exerData: newExer
         });
         this.props.onCreate(exer);
-    }
+    }*/
 
       handleChange(e) {   // input 창에 입력 가능하도록 만듬
           let nextState = {};
@@ -46,6 +46,8 @@ import axios from 'axios';
               sets: this.state.sets
           };
           this.props.onCreate(exer);
+          console.log(exer);
+          //axios
           const variables = [
             {name: this.state.weight, type:1},
             {name: this.state.count, type:1},
@@ -61,7 +63,7 @@ import axios from 'axios';
               ]
         })
         console.log(postResult.data.data);
-
+//
 
           this.setState({
               name: '',
@@ -98,14 +100,14 @@ const create =(
             onChange={this.handleChange}
         />
         <input
-            type="number"
+            type="text"
             name="count"
             placeholder="횟수"
             value={this.state.count}
             onChange={this.handleChange}
         />
         <input
-            type="number"
+            type="text"
             name="sets"
             placeholder="셋트"
             value={this.state.sets}
