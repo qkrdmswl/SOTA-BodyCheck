@@ -4,6 +4,7 @@ const path = require('path');
 const morgan = require('morgan');
 const dotenv = require('dotenv');
 const cookieParser = require('cookie-parser');
+const cors = require('cors');
 
 dotenv.config();
 const authRouter = require('./routes/auth');
@@ -17,6 +18,7 @@ const dateRecordRouter = require('./routes/dateRecord');
 
 const app = express();
 app.set('port', process.env.PORT || 3001);
+app.use(cors());
 app.set('view engine', 'html');
 app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: false }));
