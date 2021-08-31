@@ -14,6 +14,7 @@ const exerciseRouter = require('./routes/exercise');
 const profileRouter = require('./routes/profile');
 const recordRouter = require('./routes/record');
 const dateRecordRouter = require('./routes/dateRecord');
+const dietRouter = require('./routes/diet');
 
 
 const app = express();
@@ -47,6 +48,7 @@ app.use('/exercise', exerciseRouter);
 app.use('/profile', profileRouter);
 app.use('/record', recordRouter);
 app.use('/dateRecord', dateRecordRouter);
+app.use('/diet', dietRouter);
 
 // app.get('*', async (req, res) => {
 //     res.sendFile(path.join(__dirname, '/../build/index.html'));
