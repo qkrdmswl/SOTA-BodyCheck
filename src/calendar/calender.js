@@ -22,16 +22,16 @@ function App() {
       <body>
         <header className="App-header">
           <div className="logo">
-            <Link to ="/main">
+            {/*<Link to ="/main">
             <button className="title">Body Check</button>
-            </Link>
+            </Link>*/}
           </div>
           <div className="icon">
             <i className="icon-signal"></i>
             <i className="icon-my"></i>
           </div>
         </header>
-        <hr></hr>
+   
         <section>
           <div className="left">
             <div className="calendar">

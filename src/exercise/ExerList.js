@@ -123,7 +123,9 @@ async handleCreate(exer) {
       }
       return (
           <div id="전체">
-          
+            <Link to ="/main">
+  <button className="title" style={{"marginLeft":"30px"}}>Body Check</button>
+   </Link>
             <hr/>
                {/*운동List*/}
               <input id="검색input"
