@@ -146,7 +146,7 @@ router.post('/:id/upload', isLoggedIn, async (req, res, next) => {
             return res.status(400).json(getFailure(req.originalUrl + ' not ur dateRecord'));
         }
 
-        const uploadResult = await postAPI(`/dateRecords/${id}/upload`, token, {file, description});
+        const uploadResult = await postAPI(`/dateRecords/${id}/files/upload`, token, {file, description});
 
 
         return res.status(uploadResult.status).json(uploadResult.data);
