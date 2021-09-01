@@ -19,12 +19,18 @@ const Header = () => {
         onHide={() => setSignInModalOn(false)}
       />
 
-
       <header>
         <Navbar bg="light" expand="lg">
           <Container>
-            <Navbar.Brand>Body Check</Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
+            <Link to="/main">
+              <button
+                className="title"
+                style={{ marginLeft: "30px", marginRight: "30px" }}
+              >
+                Body Check
+              </button>
+            </Link>
             <Navbar.Collapse id="basic-navbar-nav">
               <Nav className="ml-auto">
                 <Nav.Link>
@@ -48,7 +54,7 @@ const Header = () => {
             </Navbar.Collapse>
           </Container>
         </Navbar>
-
+        <hr></hr>
       </header>
     </>
   );

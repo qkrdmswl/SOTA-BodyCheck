@@ -1,4 +1,3 @@
-  
 import React, { useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
@@ -12,9 +11,11 @@ class Calender extends React.Component {
   onChange = (date) => this.setState({ date });
 
   callDay = (clickedDay) => {
-    const date = `${clickedDay.getFullYear()}-${clickedDay.getMonth()+1}-${clickedDay.getDate()}`;
+    const date = `${clickedDay.getFullYear()}-${
+      clickedDay.getMonth() + 1
+    }-${clickedDay.getDate()}`;
     this.props.onChange(date);
-  }; //moment(day.dateString).format(_format)
+  };
 
   render() {
     return (
