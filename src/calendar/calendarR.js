@@ -11,9 +11,11 @@ class Calender extends React.Component {
   onChange = (date) => this.setState({ date });
 
   callDay = (clickedDay) => {
-    const date = `${clickedDay.getFullYear()}-${clickedDay.getMonth()+1}-${clickedDay.getDate()}`;
+    const date = `${clickedDay.getFullYear()}-${
+      clickedDay.getMonth() + 1
+    }-${clickedDay.getDate()}`;
     this.props.onChange(date);
-  }; //moment(day.dateString).format(_format)
+  };
 
   render() {
     return (

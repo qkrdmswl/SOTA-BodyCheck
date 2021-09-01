@@ -25,13 +25,15 @@ import BodycheckLogo from "BodyCheckLogo";
         show={MyInfoOn}
         onHide={() => setMyInfoOn(false)}
       />
-  <BodycheckLogo/>
+   <BodycheckLogo/>
 
   <header style={{"float":"right"}}>
+ 
         <Navbar bg="light" expand="lg">
           <Container>
             <Navbar.Brand></Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
+
             <Navbar.Collapse id="basic-navbar-nav">
               <Nav className="ml-auto">
                 <Nav.Link>
@@ -65,8 +67,9 @@ import BodycheckLogo from "BodyCheckLogo";
             </Navbar.Collapse>
           </Container>
         </Navbar>
-
+        <hr></hr>
       </header>
+      <hr/>
     </>
   );
 };

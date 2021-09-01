@@ -1,17 +1,17 @@
-import React, { useState, Component } from 'react';
+import React, { useState, Component } from "react";
 //exer
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { StateMachineProvider, createStore } from "little-state-machine";
 import MainPage from './MainPage';
 //user
 import { Container } from "react-bootstrap";
-import SignInModal from './SignModels/SignInModal';
-import SignUpModal from './SignModels/SignUpModal';
-import Footer from './Layouts/Footer';
-import Header from './Layouts/Header';
-import Layout from './Layouts/Layout';
+import SignInModal from "./SignModels/SignInModal";
+import SignUpModal from "./SignModels/SignUpModal";
+import Footer from "./Layouts/Footer";
+import Header from "./Layouts/Header";
+import Layout from "./Layouts/Layout";
 //import HomePage from './pages/HomePage';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap/dist/css/bootstrap.min.css";
 import Calender from "./calendar/calender";
 import ExerList from './exercise/ExerList';
 import Exer from './exercise/ExerList';
@@ -40,6 +40,5 @@ function App() {
     
   );
 }
-
 
 export default App;

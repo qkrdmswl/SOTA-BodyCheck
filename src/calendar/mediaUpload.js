@@ -1,26 +1,44 @@
-<script type="module">
-    import * as React from "https://cdn.skypack.dev/react@17.0.1";
-</script>
+import React, { Component } from "react";
+import "./mediaUpload.css";
 
-function media() {
-  
-  const handleFileChange = (e) => {
-    console.log("handle file change called");
-    const files = e.target.files;
-    console.log(files);
-    const filesArr = Array.prototype.slice.call(files);
-    console.log(filesArr);
+export class Media extends Component {
+  state = {
+    profileImg: "https://www.analogouscolors.com/image/1080x1920/dcdcdc.png",
+  };
+  imageHandler = (e) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (reader.readyState === 2) {
+        this.setState({ profileImg: reader.result });
+      }
+    };
+    reader.readAsDataURL(e.target.files[0]);
+  };
+  render() {
+    const { profileImg } = this.state;
+    return (
+      <div className="page">
+        <div className="container">
+          <h5 className="heading">미디어 업로드</h5>
+          <div className="img-holder">
+            <img src={profileImg} alt="" id="img" className="img" />
+          </div>
+          <input
+            type="file"
+            accept="image/*"
+            name="image-upload"
+            id="input"
+            onChange={this.imageHandler}
+          />
+          <div className="label">
+            <label className="image-upload" htmlFor="input">
+              이미지 업로드
+            </label>
+          </div>
+        </div>
+      </div>
+    );
   }
-
-
-  return (
-    <input
-      id="fileUpolad"
-      type="file"
-      onChange={handleFileChange}
-      multiple
-    />
-  );
 }
 
-export default media;
+export default Media;

@@ -6,7 +6,7 @@ class BodycheckLogo extends Component {
     return (
         
     <Link to ="/main">
-  {<button className="title" style={{"marginTop":"50px", "marginLeft":"250px"}}>Body Check</button>}
+  {<button className="title" style={{"marginTop":"50px", "marginLeft":"300px"}}>Body Check</button>}
    </Link>
         
     );}
