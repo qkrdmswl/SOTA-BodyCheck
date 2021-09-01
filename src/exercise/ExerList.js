@@ -4,6 +4,7 @@ import CreateExerLabel from './CreateExerLabel';
 import ExerInfo from './ContactInfo';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import BodycheckLogo from 'BodyCheckLogo';
 //
 //const app = express();
 //app.use(session({ secret: 'somevalue' }));
@@ -108,9 +109,9 @@ async handleCreate(exer) {
    render() {
     
       const mapToComponents = (data) => { //배열을 컴포넌트로 맵핑
-          {/*data = data.filter((exer) => {
+          {data = data.filter((exer) => {
               return exer.name.toLowerCase().indexOf(this.state.keyword.toLowerCase()) > -1;
-          })*/}
+          })}
           return data.map((exer, i) => {
               return (<ExerInfo
                   exer={exer}
@@ -122,11 +123,11 @@ async handleCreate(exer) {
 //
       }
       return (
-          <div id="전체">
-            <Link to ="/main">
+          <div id="전체" style={{"marginLeft":"220px", "marginTop":"10px"}}> 
+  {/*}          <Link to ="/main">
   <button className="title" style={{"marginLeft":"30px"}}>Body Check</button>
-   </Link>
-            <hr/>
+   </Link>*/}
+            
                {/*운동List*/}
               <input id="검색input"
                   name="keyword"

@@ -3,9 +3,6 @@ import React, { useState, Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { StateMachineProvider, createStore } from "little-state-machine";
 import MainPage from './MainPage';
-//import exerLabel from './pages/exerLabel';
-import InputSample from './exercise/ExerInfo';
-//import Header from './components/Header';
 //user
 import { Container } from "react-bootstrap";
 import SignInModal from './SignModels/SignInModal';
@@ -18,24 +15,29 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Calender from "./calendar/calender";
 import ExerList from './exercise/ExerList';
 import Exer from './exercise/ExerList';
-import CreateExerLabel from 'exercise/CreateExerLabel';
+import BodycheckLogo from 'BodyCheckLogo';
+import ExerCreatePage from './ExerCreatePage';
 
 function App() {
   return (
-    <>
-       <StateMachineProvider>
+    
+     <StateMachineProvider>
       <Router>
         <Switch>
+
+        { /*<Route path='' render={MainPage} />*/}
+        { <Route path='/main' component={MainPage} />}
           <Route path='/as@a.com/exercise' component={ExerList} />
-          <Route path='/as@a.com/exercise/new' component={Exer} />
-          <Route path='/' component={MainPage} />
+          {<Route path='/as@a.com/exercise/new' render={Exer} />}
           {/*<Route path='/main/calender' component={Calender} /> */} 
           <Route path='/as@a.com/calendar ' component={Calender} />
-          <Route render={() => <div className='error'>링크똑디 안쓰나</div>} />         
+          <Route path = "/exercise/new" render={ExerCreatePage} />         
+          
+        { <Route render={() => <div className='error'>app.js정상</div>} />    }     
         </Switch>
       </Router>
-      </StateMachineProvider>
-    </>
+    </StateMachineProvider >
+    
   );
 }
 

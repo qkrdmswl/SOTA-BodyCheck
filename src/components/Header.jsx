@@ -7,7 +7,7 @@ function Header({ location, history }) {
       <strong>Header</strong>
       <ul>
         <li>
-          <button onClick={() => history.push('/main')}>홈</button>
+       {  <button onClick={() => history.push('/main')}>홈</button>}
         </li>
 
       </ul>

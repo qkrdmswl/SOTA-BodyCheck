@@ -4,7 +4,7 @@ import SignInModal from "../SignModels/SignInModal";
 import SignUpModal from "../SignModels/SignUpModal";
 import { Link } from "react-router-dom";
 import { Route } from "react-router";
-
+import BodycheckLogo from "BodyCheckLogo";
 const Header = () => {
   const [signUpModalOn, setSignUpModalOn] = useState(false);
   const [signInModalOn, setSignInModalOn] = useState(false);
@@ -18,12 +18,13 @@ const Header = () => {
         show={signInModalOn}
         onHide={() => setSignInModalOn(false)}
       />
+  <BodycheckLogo/>
 
 
-      <header>
-        <Navbar bg="light" expand="lg">
+      <header style={{"float":"right"}}>
+        <Navbar bg="light" expand="lg" >
           <Container>
-            <Navbar.Brand>Body Check</Navbar.Brand>
+           {/* <Navbar.Brand>Body Check</Navbar.Brand>*/}
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
               <Nav className="ml-auto">
@@ -50,6 +51,7 @@ const Header = () => {
         </Navbar>
 
       </header>
+      <hr/>
     </>
   );
 };

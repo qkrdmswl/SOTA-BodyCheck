@@ -4,7 +4,8 @@ import ExerInfo from './ContactInfo';
 import { Link } from 'react-router-dom';
 import { Button } from 'bootstrap';
 import axios from 'axios';
-
+import ExerCreatePage from 'ExerCreatePage';
+import Header from 'Layouts/Header';
 
   export default class CreateExerLabel extends React.Component {
       constructor(props) {
@@ -81,8 +82,8 @@ import axios from 'axios';
 
       render() {
 const create =(
-    <div id="운동생성" style={{ "width": "30%" }}>
-
+    <div id="운동생성" style={{ "width": "30%" , "padding":"center"}}>
+    
     <h2>운동 생성</h2>
     <p>
         <input
@@ -126,12 +127,13 @@ const blank = (<div id="blank" style={{ "visibility":"hidden" }} >안보이게 �
 
 
       return (
-       <div>
-        <Link to ="/as@a.com/exercise/new">
-            <button id ="create" onClick={this.handlePageCreate}> + </button>
+         
+       <div style={{"marginTop":"-50px" ,"border-radius":"5px"}}>   
+          
+        <Link to ="/exercise/new">
+            <button id ="create" onClick={this.handlePageCreate}  style={{"marginTop":"10px","border-radius":"5px"}}> + </button>
             </Link>
         {this.state.isCreate ? create :blank}
-        
        </div>
      
           );
