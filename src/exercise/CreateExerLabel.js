@@ -3,6 +3,9 @@ import Exer from './ExerList';
 import ExerInfo from './ContactInfo';
 import { Link } from 'react-router-dom';
 import { Button } from 'bootstrap';
+import axios from 'axios';
+
+
   export default class CreateExerLabel extends React.Component {
       constructor(props) {
           super(props);
@@ -15,19 +18,19 @@ import { Button } from 'bootstrap';
           };
           this.handleChange = this.handleChange.bind(this);
           this.handleClick = this.handleClick.bind(this);
-          this.handleCreate = this.handleCreate.bind(this);
-
-      this.handlePageCreate = this.handlePageCreate.bind(this);
+         // this.handleCreate = this.handleCreate.bind(this);
+          this.handlePageCreate = this.handlePageCreate.bind(this);
       }
-  
-      handleCreate(exer) {
+
+
+      /*handleCreate(exer) {
         var newExer = Array.from(this.state.exerData);
         newExer.push(exer);
         this.setState({
             exerData: newExer
         });
         this.props.onCreate(exer);
-    }
+    }*/
 
       handleChange(e) {   // input 창에 입력 가능하도록 만듬
           let nextState = {};
@@ -35,15 +38,32 @@ import { Button } from 'bootstrap';
           this.setState(nextState)
       }
   
-      handleClick() {
+      async handleClick() {
           const exer = {   // 한번 만들어지면 수정할 일이 없으므로  const로 선언
               name: this.state.name,
               weight: this.state.weight,
               count: this.state.count,
               sets: this.state.sets
           };
-  
           this.props.onCreate(exer);
+          console.log(exer);
+          //axios
+          const variables = [
+            {name: this.state.weight, type:1},
+            {name: this.state.count, type:1},
+            {name: this.state.sets, type:1}
+          ]
+          console.log(variables);
+        const postResult = await axios.post('/exercise/me', {
+            name: this.state.name,
+            variables: [
+                {name: '무게', type:1},
+                {name: '횟수', type:1},
+                {name: '셋트', type:1},
+              ]
+        })
+        console.log(postResult.data.data);
+//
 
           this.setState({
               name: '',
@@ -51,13 +71,14 @@ import { Button } from 'bootstrap';
               count:'',
               sets:''
           });
+
       }
 
       handlePageCreate() {
         this.setState({
             isCreate: true
         });}
-    
+
       render() {
 const create =(
     <div id="운동생성" style={{ "width": "30%" }}>
@@ -79,35 +100,38 @@ const create =(
             onChange={this.handleChange}
         />
         <input
-            type="number"
+            type="text"
             name="count"
             placeholder="횟수"
             value={this.state.count}
             onChange={this.handleChange}
         />
         <input
-            type="number"
+            type="text"
             name="sets"
             placeholder="셋트"
             value={this.state.sets}
             onChange={this.handleChange}
         />
     </p>
-    {<button onClick={this.handleClick}>
+    {<button onClick={this.handleClick}> 
         {this.state.isCreate ? "ok":"Create"}
         </button>}
     <hr/>
 
         </div>
+        
 );
 const blank = (<div id="blank" style={{ "visibility":"hidden" }} >안보이게 처리한곳</div>)
-        
+
+
       return (
        <div>
         <Link to ="/as@a.com/exercise/new">
             <button id ="create" onClick={this.handlePageCreate}> + </button>
             </Link>
         {this.state.isCreate ? create :blank}
+        
        </div>
      
           );

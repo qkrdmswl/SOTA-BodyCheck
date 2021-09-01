@@ -7,8 +7,8 @@
     "@material-ui/data-grid": "^4.0.0-alpha.37",
     "@material-ui/styles": "^4.11.4",
     "@testing-library/jest-dom": "^5.14.1",
-    "@testing-library/react": "^11.2.7",
-    "@testing-library/user-event": "^12.8.3",
+    "@testing-library/react": "^12.0.0",
+    "@testing-library/user-event": "^13.2.1",
     "actions": "^1.3.0",
     "axios": "^0.21.1",
     "bootstrap": "^5.1.0",
@@ -24,23 +24,23 @@
     "react-bootstrap": "^1.6.1",
     "react-calendar": "^3.4.0",
     "react-click-outside": "^3.0.1",
-    "react-datepicker": "^4.2.0",
+    "react-datepicker": "^4.2.1",
     "react-dom": "^17.0.2",
     "react-google-login": "^5.2.2",
-    "react-hook-form": "^7.12.2",
+    "react-hook-form": "^7.14.1",
     "react-icons": "^4.2.0",
     "react-immutable-proptypes": "^2.2.0",
     "react-redux": "^7.2.4",
-    "react-router-dom": "^5.2.0",
-    "react-scripts": "4.0.3",
+    "react-router-dom": "^5.2.1",
+    "react-scripts": "^4.0.3",
     "react-textarea-autosize": "^8.3.3",
     "react-transition-group": "^4.4.2",
     "redux": "^4.1.1",
     "redux-actions": "^2.6.5",
     "redux-duplicate-actions": "^2.0.3",
     "redux-pender": "^2.0.12",
-    "styled-components": "^5.3.0",
-    "web-vitals": "^1.1.2"
+    "styled-components": "^5.3.1",
+    "web-vitals": "^2.1.0"
   },
   "scripts": {
     "startss": "npm-run-all --parallel start:**",
@@ -69,5 +69,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:3000"
+  "proxy": "http://localhost:3001"
 }

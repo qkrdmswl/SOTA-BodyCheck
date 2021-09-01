@@ -3,17 +3,28 @@ const {API_URL} = require('../config/const');
 
 let request = {};
 
-request.request = async (method, url, token, data, params) => {
+request.requestAPI = async (method, url, headers, data, params) => {
   return await axios({
     method,
     url: API_URL + url,
-    headers: {
-      'bodycheck-access-token': token,
-      'bodycheck-client-secret': process.env.CLIENT_SECRET,
-    },
-      data,
-      params,
+    headers,
+    data,
+    params,
   });
+}
+
+request.request = async (method, url, token, data, params) => {
+  return await request.requestAPI(
+    method, 
+    url, 
+    {
+    'bodycheck-access-token': token,
+    'bodycheck-client-secret': process.env.CLIENT_SECRET,
+    },
+    data,
+    params
+  );
+  
 }
 
 request.getAPI = async (url, token, params) => {
@@ -31,6 +42,5 @@ request.patchAPI = async (url, token, data) => {
 request.deleteAPI = async (url, token, params) => {
   return await request.request('DELETE', url, token, null, params );
 }
-
 
 module.exports = request;
