@@ -1,8 +1,8 @@
+  
 import React, { useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import "./calendar.css";
-import Container from "./dietTable";
 
 class Calender extends React.Component {
   state = {
@@ -12,7 +12,8 @@ class Calender extends React.Component {
   onChange = (date) => this.setState({ date });
 
   callDay = (clickedDay) => {
-    this.props.setDate(clickedDay);
+    const date = `${clickedDay.getFullYear()}-${clickedDay.getMonth()+1}-${clickedDay.getDate()}`;
+    this.props.onChange(date);
   }; //moment(day.dateString).format(_format)
 
   render() {
