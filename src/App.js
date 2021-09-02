@@ -26,7 +26,8 @@ function App() {
         <Switch>
 
         { /*<Route path='' render={MainPage} />*/}
-        { <Route path='/main' component={MainPage} />}
+        { <Route exact path='/' component={MainPage} />}
+        { <Route exact path='/main' component={MainPage} />}
           <Route path='/as@a.com/exercise' component={ExerList} />
           {<Route path='/as@a.com/exercise/new' render={Exer} />}
           {/*<Route path='/main/calender' component={Calender} /> */} 

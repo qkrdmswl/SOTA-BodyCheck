@@ -39,12 +39,13 @@ const SignInModal = ({ show, onHide }) => {
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
       centered
+     // style={{"backgroundColor":"white"}}
     >
-      <Container>
-        <Modal.Header closeButton>
+      <Container > 
+        <Modal.Header closeButton style={{"backgroundColor":"white"}}>
           <Modal.Title id="contained-modal-title-vcenter">Sign In</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body style={{"backgroundColor":"white"}}>
           <Form>
             <Form.Group>
               <Form.Label>Email address</Form.Label>

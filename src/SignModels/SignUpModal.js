@@ -27,10 +27,10 @@ const SignUpModal = ({ show, onHide }) => {
       centered
     >
       <Container>
-        <Modal.Header closeButton>
+        <Modal.Header closeButton style={{"backgroundColor":"white"}}>
           <Modal.Title id="contained-modal-title-vcenter">Sign Up</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body style={{"backgroundColor":"white"}}>
           <Form>
             <Form.Group>
               <Form.Label>Name</Form.Label>

@@ -10,8 +10,9 @@ const FindId = ({ show, onHide }) => {
           size="lg"
           aria-labelledby="contained-modal-title-vcenter"
           centered
+          style={{backgroundColor:"white"}}
         >
-          <Container>
+          <Container style={{"backgroundColor":"white"}}>
             <Modal.Header closeButton>
               <Modal.Title id="contained-modal-title-vcenter">Find ID</Modal.Title>
             </Modal.Header>

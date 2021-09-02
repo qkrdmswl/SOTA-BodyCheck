@@ -41,7 +41,7 @@ const InfoModal = ({ show, onHide }) => {
       aria-labelledby="contained-modal-title-vcenter"
       centered
     >
-      <Container>
+      <Container style={{"backgroundColor":"white"}}>
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">MyInfo</Modal.Title>
         </Modal.Header>
